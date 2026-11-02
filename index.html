@@ -13,7 +13,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Hdpeduct | HDPE Pipes &amp; Telecom Infrastructure Solutions">
   <meta name="twitter:description" content="Explore Hdpeduct's HDPE pipes, telecom microducts and infrastructure piping solutions for telecom, utilities, water and industrial projects.">
-  <link rel="icon" type="image/png" href="assets/hdpeduct_logo_nobg.png">
+  <link rel="icon" type="image/png" href="Images/logo.png">
   <title>Hdpeduct | HDPE Pipes &amp; Telecom Infrastructure Solutions</title>
   <style>
     :root {
@@ -3040,14 +3040,23 @@
     body[data-theme="light"] .products-section .section-heading h2 { color:#18364c; background:none; -webkit-text-fill-color:#18364c; }
     body[data-theme="light"] .hero-slide-product .hero-kicker { color:#176b67; }
     .hero-empty { min-height: 275px; display: flex; flex-direction: column; justify-content: center; }
-    .site-progress { top: 108px; right: max(8px,env(safe-area-inset-right)); bottom: 0; left: auto; width: 38px; height: auto; overflow: visible; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .site-progress { top: 108px; right: max(8px,env(safe-area-inset-right)); bottom: 24px; left: auto; width: 30px; height: auto; overflow: visible; border: 0; border-radius: 0; background: transparent !important; box-shadow: none; transition: none; }
     .site-progress:before,.site-progress:after { display: none; }
-    .site-progress-track { inset: 0 17px; overflow: visible; border-radius: 0; background: transparent; box-shadow: none; }
-    .site-progress-fill { inset: 0 auto auto 0; width: 4px; height: 0; border-radius: 0; background: #ef7845; box-shadow: none; transition: height .12s linear; }
-    .site-progress output { top: 0; bottom: auto; left: 50%; min-width: 0; border: 0; border-radius: 0; padding: 0; color: #18364c; background: transparent; box-shadow: none; font-size: 10.08px; font-weight: 800; text-shadow: 0 0 3px #fff,0 0 5px #fff; transform: translate(-50%,-50%); }
-    .site-progress input { inset: 0; width: 100%; height: 100%; cursor: ns-resize; writing-mode: vertical-lr; direction: rtl; }
-    .site-progress:focus-within { outline: 2px solid #ef7845; outline-offset: -4px; }
-    body[data-theme="dark"] .site-progress output { color: #fff; text-shadow: 0 1px 3px #102030; }
+    .site-progress-track { inset: 0 13px; overflow: visible; border-radius: 999px; background: transparent !important; box-shadow: none; transition: none; }
+    .site-progress-fill { inset: 0 auto auto 0; width: 4px; height: 40px; border-radius: 999px; background: #ef7845; box-shadow: 0 0 0 1px #fff5; transition: none; }
+    .site-progress output { top: 20px; bottom: auto; left: 50%; min-width: 38px; border: 0; border-radius: 999px; padding: 3px 5px; color: #fff; background: #17394f; box-shadow: none; font-size: 8.96px; font-weight: 800; line-height: 1.2; text-align: center; opacity: 0; transform: translate(-50%,-50%); }
+    .site-progress input { inset: 0; width: 100%; height: 100%; cursor: grab; writing-mode: vertical-lr; direction: rtl; }
+    .site-progress:active input { cursor: grabbing; }
+    .site-progress:hover .site-progress-fill,.site-progress:focus-within .site-progress-fill { width: 14px; }
+    .site-progress:hover output,.site-progress:focus-within output { opacity: 1; }
+    .site-progress:focus-within { outline: 0; }
+    .site-progress:focus-within .site-progress-fill { box-shadow: 0 0 0 3px #ef784566; }
+    body[data-theme="dark"] .site-progress,body[data-theme="dark"] .site-progress-track { background: transparent !important; }
+    body[data-theme="dark"] .site-progress-fill { background: #ff9568; }
+    .products-section .text-action { min-height: 40px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 1px solid var(--blue); border-radius: 6px; padding: 0 13px; color: #fff; background: var(--blue); font-size: 10.64px; font-weight: 750; letter-spacing: .025em; transition: background .2s ease,border-color .2s ease,transform .2s ease; }
+    .products-section .text-action:hover { transform: translateY(-1px); border-color: var(--blue-dark); color: #fff; background: var(--blue-dark); }
+    .products-section .text-action:focus-visible { outline: 3px solid #ef7845; outline-offset: 3px; }
+    .products-section .text-action span { display: grid; width: 23px; height: 23px; flex: 0 0 23px; place-items: center; border-radius: 50%; color: var(--blue); background: #fff; font-size: 12.32px; }
     #heroSlidesForm,#heroSlidesForm h2 { color: #23465f; }
     #heroSlidesForm .form-field { margin-bottom: 15px; }
     .hero-slide-admin-list { display: grid; gap: 9px; }
@@ -3067,8 +3076,8 @@
     body[data-theme="dark"] .hero-slide-admin-copy small { color: #a8bac5; }
     body[data-theme="dark"] .hero-slide-admin-actions button { border-color: #3b5061; color: #e5edf2; background: #203344; }
     @media (max-width:760px) {
-      .site-progress { top: 108px; right: 4px; bottom: 0; left: auto; width: 34px; height: auto; }
-      .site-progress-track { right: 15px; left: 15px; }
+      .site-progress { top: 108px; right: 4px; bottom: 24px; left: auto; width: 30px; height: auto; }
+      .site-progress-track { right: 13px; left: 13px; }
       .hero-slider-layout { grid-template-columns: 1fr; gap: 22px; }
       .hero-slides { min-height: 300px; }
       .hero-visual { min-height: 210px; }
@@ -3123,7 +3132,7 @@
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="#home" aria-label="Hdpeduct Home">
-        <img class="brand-mark" src="assets/hdpeduct_logo_nobg.png" alt="Hdpeduct" width="150" height="60">
+        <img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60">
       </a>
       <nav class="nav-links" id="navLinks" aria-label="Main navigation">
         <a href="#home">Home</a>
@@ -3162,21 +3171,6 @@
             </div>
           </div>
           <div class="hero-visual" aria-hidden="true"><div class="hero-pipe-graphic"></div><img class="hero-product-image" id="heroProductImage" alt="" hidden><span class="hero-visual-label" id="heroVisualLabel">Engineered for connection</span></div>
-        </div>
-      </div>
-    </section>
-    <section class="section categories reveal" id="categories" aria-labelledby="categoriesHeading">
-      <div class="container">
-        <div class="section-heading">
-          <h2 id="categoriesHeading">Featured Categories</h2>
-          <p>Explore our comprehensive range of industrial piping solutions and related products</p>
-        </div>
-        <div class="category-grid" id="categoryCards">
-          <a class="category-card" href="#catalog" data-category-link="HDPE Corrugated Ducts"><div class="category-art"></div><h3>Corrugated Duct Systems</h3></a>
-          <a class="category-card" href="#catalog" data-category-link="HDPE Duct Accessories"><div class="category-art"></div><h3>Duct Fittings &amp; Accessories</h3></a>
-          <a class="category-card" href="#catalog" data-category-link="HDPE Main Ducts"><div class="category-art"></div><h3>Main Duct Solutions</h3></a>
-          <a class="category-card" href="#catalog" data-category-link="HDPE Microducts"><div class="category-art"></div><h3>Microduct Systems</h3></a>
-          <a class="category-card" href="#catalog" data-category-link="On Site Equipments"><div class="category-art"></div><h3>Installation Equipment</h3></a>
         </div>
       </div>
     </section>
@@ -3273,7 +3267,7 @@
   <footer class="site-footer">
     <div class="container footer-main">
       <div class="footer-brand">
-        <a class="brand" href="#home" aria-label="Hdpeduct Home"><img class="brand-mark" src="assets/hdpeduct_logo_nobg.png" alt="Hdpeduct" width="150" height="60"></a>
+        <a class="brand" href="#home" aria-label="Hdpeduct Home"><img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60"></a>
         <p>HDPE ducting, microducts and fittings for telecom networks, alongside infrastructure products for power-sector and industrial projects.</p>
       </div>
       <div class="footer-links">
@@ -3338,7 +3332,7 @@
 
   <section class="admin-view" id="adminView" aria-label="Admin dashboard">
     <header class="admin-topbar">
-      <div class="admin-heading"><img class="brand-mark" src="assets/hdpeduct_logo_nobg.png" alt="Hdpeduct" width="150" height="60"><div><strong>Admin Dashboard</strong><small>Product and business management</small></div></div>
+      <div class="admin-heading"><img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60"><div><strong>Admin Dashboard</strong><small>Product and business management</small></div></div>
       <div class="admin-actions"><button id="backToStore" type="button">← View website</button><button id="logoutButton" type="button">Log out</button></div>
     </header>
     <div class="admin-content">
@@ -3541,12 +3535,8 @@
           buttonLabel: typeof slide.buttonLabel === "string" && slide.buttonLabel.trim() ? slide.buttonLabel.trim() : "Explore products",
           destination: typeof slide.destination === "string" ? slide.destination : "#catalog"
         }));
-      let adminPassword = "admin";
-      try {
-        adminPassword = localStorage.getItem("hdpeduct-admin-password") || adminPassword;
-      } catch (error) {
-        console.error("Unable to read the saved admin password.", error);
-      }
+      let adminSessionToken = "";
+      let sharedProductsStored = false;
       try {
         localStorage.removeItem("hdpeduct-reviews");
       } catch (error) {
@@ -3605,31 +3595,67 @@
         $("#newProductSpecs").value = sanitizeRichText($("#newProductSpecsEditor").innerHTML);
       }
       const getProductImages = product => Array.isArray(product.images) ? product.images : product.image ? [product.image] : [];
+      const API_BASE = window.BACKEND_API_URL || (window.location.protocol === "file:" ? "http://localhost:3000" : "");
+      function apiRequest(path, options = {}) {
+        const headers = new Headers(options.headers || {});
+        if (adminSessionToken) headers.set("Authorization", `Bearer ${adminSessionToken}`);
+        return fetch(`${API_BASE}${path}`, { ...options, headers });
+      }
+      async function loadSharedProducts() {
+        const response = await apiRequest("/api/products");
+        if (!response.ok) throw new Error("The shared product catalogue could not be loaded.");
+        const result = await response.json();
+        if (result.products !== null && !Array.isArray(result.products)) throw new Error("The server returned an invalid product catalogue.");
+        sharedProductsStored = Array.isArray(result.products);
+        if (sharedProductsStored) {
+          products = result.products;
+          products.forEach(product => {
+            if (product && product.category && !categories.includes(product.category)) categories.push(product.category);
+          });
+        }
+      }
+      async function saveSharedProducts() {
+        if (!adminSessionToken) throw new Error("Admin sign-in is required to save products.");
+        const serverProducts = await Promise.all(products.map(async product => {
+          const images = await Promise.all(getProductImages(product).map(async image => {
+            if (typeof image !== "string") throw new Error("A product image has an invalid value.");
+            if (!image.startsWith("data:")) return image;
+            const blob = await (await fetch(image)).blob();
+            if (blob.size > 5 * 1024 * 1024) throw new Error("A saved browser image is larger than the server's 5 MB limit.");
+            const formData = new FormData();
+            formData.append("image", blob, `product-image.${blob.type.split("/")[1] || "webp"}`);
+            const uploadResponse = await apiRequest("/upload", { method: "POST", body: formData });
+            const uploadResult = await uploadResponse.json();
+            if (!uploadResponse.ok || !uploadResult.imageUrl) throw new Error(uploadResult.error || "A product image could not be moved to the server.");
+            return uploadResult.imageUrl;
+          }));
+          return { ...product, images, image: images[0] || "" };
+        }));
+        const response = await apiRequest("/api/products", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ products: serverProducts })
+        });
+        if (!response.ok) {
+          const result = await response.json();
+          throw new Error(result.error || "The server could not save the product catalogue.");
+        }
+        products = serverProducts;
+        sharedProductsStored = true;
+      }
       const money = amount => `SAR ${Number(amount || 0).toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-      const persist = async () => {
+      const persist = () => {
         try {
-          localStorage.setItem("hdpeduct-products", JSON.stringify(products));
           localStorage.setItem("hdpeduct-categories", JSON.stringify(categories));
           localStorage.setItem("hdpeduct-partners", JSON.stringify(partners));
           localStorage.setItem("hdpeduct-hero-slides", JSON.stringify(heroSlides));
           localStorage.setItem("hdpeduct-sales", JSON.stringify(sales));
         } catch (error) {
           console.error("Unable to save Hdpeduct admin data in browser storage.", error);
-        }
-
-        // Sync to backend server so changes on PC immediately appear on mobile/all visitors
-        try {
-          const API_BASE = window.BACKEND_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:3000' : '');
-          await fetch(`${API_BASE}/api/data`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ categories, products, partners, heroSlides, sales })
-          });
-        } catch (err) {
-          console.warn("Could not sync to server:", err);
+          showNotice("Could not save changes to browser storage.");
         }
       };
-function compressProductImage(file) {
+      function compressProductImage(file) {
         if (file.type === "image/gif") {
           return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -3971,10 +3997,20 @@ function compressProductImage(file) {
         $("#adminFeaturedProducts").innerHTML = featuredProducts.length
           ? featuredProducts.map(product => `<div class="admin-featured-item"><span class="admin-featured-number">${String(products.indexOf(product) + 1).padStart(2, "0")}</span><div class="admin-featured-copy"><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.category)}</small></div><button class="feature-toggle-button selected" type="button" data-toggle-featured="${escapeHtml(product.id)}" aria-pressed="true" aria-label="Remove ${escapeHtml(product.name)} from featured products">Remove</button></div>`).join("")
           : `<p class="table-empty">No featured products selected. Add one from the Products list.</p>`;
-        $$("[data-toggle-featured]").forEach(button => button.addEventListener("click", () => {
+        $$("[data-toggle-featured]").forEach(button => button.addEventListener("click", async () => {
           const product = products.find(item => item.id === button.dataset.toggleFeatured);
           if (!product) return;
+          const previousProducts = products;
           products = products.map(item => item.id === product.id ? { ...item, featured: !item.featured } : item);
+          try {
+            await saveSharedProducts();
+          } catch (error) {
+            console.error("Unable to save the featured product change.", error);
+            products = previousProducts;
+            renderAll();
+            showNotice("Could not save this change to the shared product catalogue.");
+            return;
+          }
           persist();
           renderAll();
           showNotice(products.find(item => item.id === product.id).featured ? "Product added to Top Interesting." : "Product removed from Top Interesting.");
@@ -4008,12 +4044,24 @@ function compressProductImage(file) {
           $("#productForm").setAttribute("aria-labelledby", "productFormTitle");
           $("#newProductName").focus();
         }));
-        $$("[data-delete-product]").forEach(button => button.addEventListener("click", () => {
+        $$("[data-delete-product]").forEach(button => button.addEventListener("click", async () => {
           if (editingProductId === button.dataset.deleteProduct) resetProductForm();
           const removedProductId = button.dataset.deleteProduct;
+          const previousProducts = products;
+          const previousHeroSlides = heroSlides;
           products = products.filter(product => product.id !== removedProductId);
           heroSlides = heroSlides.filter(slide => slide.type !== "product" || slide.productId !== removedProductId);
           activeHeroSlide = Math.min(activeHeroSlide, heroSlides.length - 1);
+          try {
+            await saveSharedProducts();
+          } catch (error) {
+            console.error("Unable to remove the product from the shared catalogue.", error);
+            products = previousProducts;
+            heroSlides = previousHeroSlides;
+            renderAll();
+            showNotice("Could not remove this product from the shared catalogue.");
+            return;
+          }
           persist();
           renderAll();
           showNotice("Product removed.");
@@ -4245,9 +4293,12 @@ function compressProductImage(file) {
         siteProgressInput.value = String(rounded);
         siteProgressInput.setAttribute("aria-valuetext", `${rounded}% of page scrolled`);
         siteProgressLabel.textContent = `${rounded}%`;
-        siteProgressFill.style.height = `${progress}%`;
-        const trackHeight = $("#siteProgressFill").parentElement.clientHeight;
-        siteProgressLabel.style.top = `${Math.min(Math.max(10, trackHeight - 10), Math.max(10, progress * trackHeight / 100))}px`;
+        const trackHeight = siteProgressFill.parentElement.clientHeight;
+        const thumbHeight = Math.min(trackHeight, Math.max(40, trackHeight * window.innerHeight / document.documentElement.scrollHeight));
+        const thumbTop = (trackHeight - thumbHeight) * progress / 100;
+        siteProgressFill.style.height = `${thumbHeight}px`;
+        siteProgressFill.style.top = `${thumbTop}px`;
+        siteProgressLabel.style.top = `${thumbTop + thumbHeight / 2}px`;
       }
       function queuePageProgress() {
         if (pageScrollFrame) return;
@@ -4265,6 +4316,10 @@ function compressProductImage(file) {
         window.scrollTo({ top, behavior: "instant" });
         updatePageProgress();
       });
+      siteProgressInput.addEventListener("wheel", event => {
+        event.preventDefault();
+        window.scrollBy({ top: event.deltaY, behavior: "instant" });
+      }, { passive: false });
       updatePageProgress();
       $("#catalogSearch").addEventListener("input", renderCatalogue);
       $("#clearSearch").addEventListener("click", () => {
@@ -4372,10 +4427,6 @@ function compressProductImage(file) {
         renderCatalogue();
       });
       $("#adminProductSearch").addEventListener("input", renderAdmin);
-      $$("[data-category-link]").forEach(link => link.addEventListener("click", () => {
-        selectedCategory = link.dataset.categoryLink;
-        renderCatalogue();
-      }));
       $("#menuToggle").addEventListener("click", () => {
         const open = $("#navLinks").classList.toggle("open");
         $("#menuToggle").setAttribute("aria-expanded", String(open));
@@ -4420,13 +4471,37 @@ function compressProductImage(file) {
         }
         if (event.key === "Escape") closeLogin();
       });
-      $("#loginForm").addEventListener("submit", event => {
+      $("#loginForm").addEventListener("submit", async event => {
         event.preventDefault();
         const email = $("#adminEmail").value.trim().toLowerCase();
         const password = $("#adminPassword").value;
-        if (email !== "admin@hdpeduct" || password !== adminPassword) {
+        if (email !== "admin@hdpeduct") {
           $("#loginError").textContent = "Email or password is incorrect.";
           return;
+        }
+        const submitButton = $("#loginForm button[type='submit']");
+        submitButton.disabled = true;
+        try {
+          const response = await apiRequest("/api/admin/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+          });
+          const result = await response.json();
+          if (!response.ok || !result.token) {
+            $("#loginError").textContent = result.error || "Email or password is incorrect.";
+            return;
+          }
+          adminSessionToken = result.token;
+          await loadSharedProducts();
+          if (!sharedProductsStored) await saveSharedProducts();
+          renderAll();
+        } catch (error) {
+          console.error("Unable to sign in to the shared product service.", error);
+          $("#loginError").textContent = "Could not connect to the server. Check your connection and try again.";
+          return;
+        } finally {
+          submitButton.disabled = false;
         }
         closeLogin();
         $("#loginForm").reset();
@@ -4439,16 +4514,27 @@ function compressProductImage(file) {
         document.body.style.overflow = "";
       };
       $("#backToStore").addEventListener("click", closeAdmin);
-      $("#logoutButton").addEventListener("click", closeAdmin);
-      $("#passwordForm").addEventListener("submit", event => {
+      $("#logoutButton").addEventListener("click", async () => {
+        const token = adminSessionToken;
+        adminSessionToken = "";
+        closeAdmin();
+        if (token) {
+          try {
+            const response = await fetch(`${API_BASE}/api/admin/logout`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error("Server could not end the admin session.");
+          } catch (error) {
+            console.error("Unable to end the admin session on the server.", error);
+          }
+        }
+      });
+      $("#passwordForm").addEventListener("submit", async event => {
         event.preventDefault();
         const currentPassword = $("#currentAdminPassword").value;
         const newPassword = $("#newAdminPassword").value;
         const confirmedPassword = $("#confirmAdminPassword").value;
-        if (currentPassword !== adminPassword) {
-          showNotice("Current password is incorrect.");
-          return;
-        }
         if (newPassword.length < 6) {
           showNotice("New password must be at least 6 characters.");
           return;
@@ -4458,15 +4544,21 @@ function compressProductImage(file) {
           return;
         }
         try {
-          localStorage.setItem("hdpeduct-admin-password", newPassword);
-          adminPassword = newPassword;
+          const response = await apiRequest("/api/admin/password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ currentPassword, newPassword })
+          });
+          const result = await response.json();
+          if (!response.ok || !result.token) throw new Error(result.error || "Could not update the admin password.");
+          adminSessionToken = result.token;
         } catch (error) {
-          console.error("Unable to save the new admin password.", error);
-          showNotice("Could not save the new password in this browser.");
+          console.error("Unable to update the server admin password.", error);
+          showNotice(error.message || "Could not update the server admin password.");
           return;
         }
         event.currentTarget.reset();
-        showNotice("Admin password updated.");
+        showNotice("Admin password updated on the server.");
       });
       $$(".admin-tab").forEach(tab => tab.addEventListener("click", () => {
         $$(".admin-tab").forEach(item => item.classList.toggle("active", item === tab));
@@ -4520,45 +4612,50 @@ function compressProductImage(file) {
           showNotice("Wait for image processing to finish before saving.");
           return;
         }
-        const savedProductImages = [];
-        saveButton.disabled = productImageFiles.some(Boolean);
-        const API_BASE = window.BACKEND_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:3000' : '');
+        const savedProductImages = productImages.slice();
+        saveButton.disabled = filesToUpload.some(Boolean);
         try {
-          for (let index = 0; index < productImages.length; index += 1) {
-            const file = productImageFiles[index];
-            const currentImg = productImages[index];
-            if (file) {
-              // Upload new file directly to server disk
-              const formData = new FormData();
-              formData.append("image", file);
-              const response = await fetch(`${API_BASE}/upload`, {
-                method: "POST",
-                body: formData
-              });
-              if (!response.ok) throw new Error("Image upload failed");
+          for (let index = 0; index < filesToUpload.length; index += 1) {
+            const file = filesToUpload[index];
+            if (!file) continue;
+            const formData = new FormData();
+            formData.append("image", file);
+            const response = await apiRequest("/upload", {
+              method: "POST",
+              body: formData
+            });
+            if (!response.ok) {
               const result = await response.json();
-              const filename = (result.file && result.file.filename) || result.filename;
-              if (!filename) throw new Error("Upload response did not include filename");
-              const backendImageUrl = result.imageUrl || (API_BASE ? `${API_BASE}/images/${filename}` : `/images/${filename}`);
-              savedProductImages.push(backendImageUrl);
-            } else if (currentImg && !currentImg.startsWith("blob:")) {
-              // Existing persistent image from server
-              savedProductImages.push(currentImg);
+              throw new Error(result.error || "Image upload failed.");
             }
+            const result = await response.json();
+            const filename = (result.file && result.file.filename) || result.filename;
+            if (!filename) throw new Error("Upload response did not include the saved filename.");
+            const backendImageUrl = result.imageUrl || `/images/${filename}`;
+            savedProductImages[index] = backendImageUrl;
           }
         } catch (error) {
-          console.error("Unable to upload product images to server.", error);
-          showNotice("Could not upload product images to server. Please try again.");
+          console.error("Unable to upload product images.", error);
+          showNotice("Could not upload product images. Please try again.");
           return;
         } finally {
           saveButton.disabled = false;
         }
-if (editingProductId) {
+        const previousProducts = products;
+        if (editingProductId) {
           products = products.map(product => product.id === editingProductId
             ? { ...product, name, category, featureCategory: category, description, technicalSpecs, stock, images: savedProductImages, image: savedProductImages[0], badge, featured, newArrival }
             : product);
         } else {
           products.unshift({ id: `p-${Date.now()}`, name, category, featureCategory: category, price: 0, description, technicalSpecs, stock, images: savedProductImages, image: savedProductImages[0], badge, featured, newArrival });
+        }
+        try {
+          await saveSharedProducts();
+        } catch (error) {
+          console.error("Unable to save the product to the shared catalogue.", error);
+          products = previousProducts;
+          showNotice("Could not save this product to the shared catalogue.");
+          return;
         }
         const savedProductId = editingProductId;
         const wasEditing = Boolean(savedProductId);
@@ -4612,9 +4709,8 @@ if (editingProductId) {
           return;
         }
         try {
-          // Instant blob previews for newly selected files
-          const previewUrls = files.map(file => URL.createObjectURL(file));
-          productImages = [...productImages, ...previewUrls];
+          const uploadedImages = await Promise.all(files.map(compressProductImage));
+          productImages = [...productImages, ...uploadedImages];
           productImageFiles = [...productImageFiles, ...files];
           renderProductImagePreview();
         } catch (error) {
@@ -4737,44 +4833,13 @@ if (editingProductId) {
         showNotice(wasEditing ? "Partner updated." : "Partner added to the website.");
       });
       $("#cancelPartnerEdit").addEventListener("click", resetPartnerForm);
-      renderAll();
-    }
-      async function fetchServerData() {
-        try {
-          const API_BASE = window.BACKEND_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:3000' : '');
-          const response = await fetch(`${API_BASE}/api/data`);
-          if (!response.ok) return;
-          const data = await response.json();
-          if (data && Array.isArray(data.products) && data.products.length) {
-            products = data.products;
-            if (Array.isArray(data.categories) && data.categories.length) {
-              categories = Array.from(new Set([...defaultCategories, ...data.categories]));
-            }
-            if (Array.isArray(data.partners) && data.partners.length) {
-              partners = data.partners;
-            }
-            if (Array.isArray(data.heroSlides) && data.heroSlides.length) {
-              heroSlides = data.heroSlides;
-            }
-            if (Array.isArray(data.sales)) {
-              sales = data.sales;
-            }
-            try {
-              localStorage.setItem("hdpeduct-products", JSON.stringify(products));
-              localStorage.setItem("hdpeduct-categories", JSON.stringify(categories));
-              localStorage.setItem("hdpeduct-partners", JSON.stringify(partners));
-              localStorage.setItem("hdpeduct-hero-slides", JSON.stringify(heroSlides));
-              localStorage.setItem("hdpeduct-sales", JSON.stringify(sales));
-            } catch (_) {}
-            renderAll();
-          }
-        } catch (err) {
-          console.log("Local/offline mode active");
-        }
-      }
-      fetchServerData();
+      loadSharedProducts()
+        .catch(error => {
+          console.error("Unable to load the shared product catalogue.", error);
+          showNotice("Could not load products from the server. Showing this browser’s saved catalogue until the server is available.");
+        })
+        .finally(renderAll);
     })();
-
   </script>
 </body>
 </html>
