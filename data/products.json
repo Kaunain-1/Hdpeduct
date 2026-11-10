@@ -1,0 +1,251 @@
+[
+  {
+    "id": "p1",
+    "name": "Hdpe Pipe Fitting Machines",
+    "category": "On Site Equipments",
+    "price": 0,
+    "description": "Pipe fitting equipment for on-site installation.",
+    "featured": true,
+    "featureCategory": "On Site Equipments",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p2",
+    "name": "Compression End Cap HDPE—Compression Thread type 20mm",
+    "category": "HDPE Duct Accessories",
+    "price": 0,
+    "description": "Compression end cap for HDPE duct connections.",
+    "featured": true,
+    "featureCategory": "HDPE Duct Accessories",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p3",
+    "name": "HDPE Pipe 110mm",
+    "category": "HDPE Main Ducts",
+    "price": 0,
+    "description": "HDPE main duct for dependable network installation.",
+    "featured": true,
+    "featureCategory": "HDPE Main Ducts",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p4",
+    "name": "PVC Elbow 90°",
+    "category": "HDPE Duct Accessories",
+    "price": 0,
+    "description": "90-degree elbow fitting for piping routes.",
+    "featured": true,
+    "featureCategory": "HDPE Duct Accessories",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p5",
+    "name": "Fiber Optic Cable",
+    "category": "Telecom Infra Services",
+    "price": 0,
+    "description": "Cable for telecom and fiber infrastructure.",
+    "featured": true,
+    "featureCategory": "Telecom Infra Accessories",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p6",
+    "name": "PPR Pipe 32mm",
+    "category": "HDPE Main Ducts",
+    "price": 0,
+    "description": "PPR pipe for industrial and utility applications.",
+    "featured": true,
+    "featureCategory": "HDPE Main Ducts",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p7",
+    "name": "Micro Duct 2 Way 12/08 mm",
+    "category": "HDPE Microducts",
+    "price": 0,
+    "description": "The digital transformation taking place in the Middle East region, particularly KSA and GCC, can be described as a mammoth. The measures being undertaken such as the establishment of smart cities like NEOM and Lusail, the entire FTTx rollouts, and stretching the 5G network across the country have all led to the requirement for an optical fiber-based infrastructure of the highest quality to rise to the unprecedented levels. Among various others, Micro Duct 2 Way 12/08 mm is the most important element in the building of these networks. It has been designed and developed as the most compact, but at the same time, very high-performance ducting solution that will serve long-term, flexibly installed and reliably air-blown fiber deployed environments. What is more, its dual duct design permits the installation of various fiber lines in one pathway which, consequently, not only reduces trenching costs, and saves installation time but also assures the future scalability of the network.",
+    "technicalSpecs": "The Micro Duct 2 Way 12/08 mm is a high-density polyethylene (HDPE) microduct system engineered for modern telecom networks. Each duct has an outer diameter of 12 mm and an inner diameter of 8 mm, making it suitable for micro-cables, air-blown fiber, and FTTx installations. The dual-duct configuration allows operators to deploy primary and backup fiber lines or multiple micro-cables in a single trench or conduit.\n\nDesigned for harsh desert climates, the Micro Duct 2 Way 12/08 mm is resistant to UV radiation, extreme temperatures, and soil pressure, making it ideal for direct burial, duct-in-duct installations, or aerial routing. Its smooth internal surface ensures long-distance air-blown fiber deployment with minimal friction, reducing both labor costs and installation time.\n\nAvailable in continuous coils, it allows uninterrupted deployment across long distances and supports rapid expansion of network infrastructure.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p8",
+    "name": "HDPE PE100 Mini Duct Full Orange 20/16 mm",
+    "category": "HDPE Miniducts",
+    "price": 0,
+    "description": "Orange PE100 mini duct.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p9",
+    "name": "HDPE PE100 Duct 20/16 mm SDR 11 PN 16 Full Black",
+    "category": "HDPE Miniducts",
+    "price": 0,
+    "description": "Black PE100 duct, 20/16 mm.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p10",
+    "name": "HDPE PE100 Duct 32/28.2 mm SDR 17 PN 10 Full Black",
+    "category": "HDPE Miniducts",
+    "price": 0,
+    "description": "Black PE100 duct, 32/28.2 mm.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p11",
+    "name": "HDPE PE100 Main Duct 90 mm PN 10",
+    "category": "HDPE Main Ducts",
+    "price": 0,
+    "description": "PE100 main duct, 90 mm.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p12",
+    "name": "Drum Roller for Microduct Rolls",
+    "category": "On Site Equipments",
+    "price": 0,
+    "description": "Drum roller for smooth microduct roll handling.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p13",
+    "name": "Warning Tape STC",
+    "category": "Warning Tapes",
+    "price": 0,
+    "description": "Warning tape for underground installations.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p14",
+    "name": "Microduct End Cap 12/08MM",
+    "category": "HDPE Duct Accessories",
+    "price": 0,
+    "description": "End cap for microduct protection.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p15",
+    "name": "PP Rope 3 mm x 1000 Metre",
+    "category": "Rope",
+    "price": 0,
+    "description": "Polypropylene rope, 3 mm by 1000 metres.",
+    "featured": false,
+    "featureCategory": "PR Ropes",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p16",
+    "name": "Plastic Spacer 20 mm 5 Way Base",
+    "category": "Plastic Pipe Spacer",
+    "price": 0,
+    "description": "Five-way plastic pipe spacer base.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p17",
+    "name": "Duct End Plug 25mm",
+    "category": "Telecom Infra Services",
+    "price": 0,
+    "description": "End plug for telecom ducts.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p18",
+    "name": "HDPE - CD 110 mm with 5 Subducts 33/28 mm (PECD)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Corrugated duct with five subducts.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p19",
+    "name": "HDPE - CD 110 mm with 5 Subducts 33/28 mm (PECD) With Different color subducts",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Corrugated duct with five colored subducts.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p20",
+    "name": "HDPE - CD 110 mm with 4 Subducts 38/32 mm (PECD)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Corrugated duct with four subducts.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p21",
+    "name": "HDPE - CD 110 mm with 3 Subducts 42/36 mm (PECD)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Corrugated duct with three subducts.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p22",
+    "name": "HDPE - CD 110 mm with 7 Subducts 29/25 mm (PECD)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Corrugated duct with seven subducts.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p23",
+    "name": "HDPE - CD 110 mm without Subduct (PECD 110 mm Empty)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Empty HDPE corrugated duct, 110 mm.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p24",
+    "name": "HDPE - CD 77 mm with 3 Subducts 27.2/22.2 mm (PECD)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Corrugated duct with three subducts.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p25",
+    "name": "HDPE - CD 77 mm without (PECD 77 mm Empty)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Empty HDPE corrugated duct, 77 mm.",
+    "images": [],
+    "image": ""
+  },
+  {
+    "id": "p26",
+    "name": "HDPE - CD 90 mm with 3 Subducts 33/28 mm (PECD)",
+    "category": "HDPE Corrugated Ducts",
+    "price": 0,
+    "description": "Corrugated duct with three subducts, 90 mm.",
+    "images": [],
+    "image": ""
+  }
+]

@@ -1,60 +1,13 @@
-# Hdpeduct — Web Application & Backend
+# Hdpeduct Website
 
-Engineered piping solutions website with admin catalogue management and product image upload backend.
+This is a static website built with HTML, CSS, and browser JavaScript. It does not require Node.js, a backend server, or API endpoints. Open `index.html` directly or publish the project files to any static web host. Keep the `Images` and `assets` folders alongside `index.html`.
 
----
+## Website editor
 
-## Quick Start (Run Locally)
+Open **Website Editor** and use admin ID `admin@hdpeduct` with the default password `admin`. The Account tab lets you change the password; it is saved in this browser's local storage.
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+The login is only a convenience prompt. Because the website and password check run entirely in the browser, they cannot securely prevent visitors from inspecting or changing the code or browser storage. Do not use this setup to protect confidential data or privileged actions.
 
-2. Start the server:
-   ```bash
-   npm start
-   ```
+Products, uploaded images, categories, partners, homepage slides, and sales data are saved in the current browser using IndexedDB, with local storage as a fallback. These changes are not uploaded or shared with other visitors and do not update the files on the static host. Use **Export site data** and **Import site data** to back up or move changes between browsers. Browser storage can be cleared or limited; keep a backup of important edits.
 
-3. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
-
-The initial local admin sign-in is `admin@hdpeduct` / `admin`. Set the
-`ADMIN_PASSWORD` environment variable before the first production start. Admin
-passwords are stored as salted hashes in `data/admin-auth.json`; product
-catalogue changes are shared through `data/products.json`, and uploaded images
-are stored in `images/`.
-
----
-
-## Hosting on Render (Recommended Solution)
-
-The easiest and most reliable way to host this project on Render is as a **single Web Service** that serves both your frontend website and your backend upload API together. This eliminates CORS issues and requires only a single free Render service.
-
-### Step-by-Step Render Deployment
-
-1. **Push your code to GitHub / GitLab**.
-2. Go to your [Render Dashboard](https://dashboard.render.com/) and click **New +** > **Web Service**.
-3. Connect your repository.
-4. Configure the service settings:
-   - **Name**: `hdpeduct` (or your choice)
-   - **Runtime**: `Node`
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-   - **Instance Type**: `Free`
-5. Click **Create Web Service**.
-6. Once deployed, click the generated Render URL (e.g., `https://hdpeduct.onrender.com`).
-   - Your frontend website will load directly at the root `/`.
-   - Your shared product catalogue will be served by `/api/products`.
-   - Admin product/image changes require an authenticated admin session.
-   - Uploaded images will be served at `/images/...`.
-
----
-
-### Important Note on Uploaded Images on Render Free Tier
-- **Ephemeral Storage**: On Render's Free tier, the filesystem is ephemeral, meaning products, admin credentials, and uploaded images will reset whenever the service restarts.
-- **For Permanent Uploads**:
-  - Add a **Render Persistent Disk** (for example, mounted at `/opt/render/project/src/persistent`) and set `DATA_DIR` to `/opt/render/project/src/persistent/data` and `UPLOAD_DIR` to `/opt/render/project/src/persistent/images`, or
-  - Integrate a persistent database and cloud media service such as Cloudinary or AWS S3.
+Product inquiries and contact forms open the visitor's email application.

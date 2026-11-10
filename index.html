@@ -13,7 +13,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Hdpeduct | HDPE Pipes &amp; Telecom Infrastructure Solutions">
   <meta name="twitter:description" content="Explore Hdpeduct's HDPE pipes, telecom microducts and infrastructure piping solutions for telecom, utilities, water and industrial projects.">
-  <link rel="icon" type="image/png" href="Images/logo_dark.png">
+  <link rel="icon" type="image/png" href="Images/logo.png">
   <title>Hdpeduct | HDPE Pipes &amp; Telecom Infrastructure Solutions</title>
   <style>
     :root {
@@ -3133,7 +3133,7 @@
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="#home" aria-label="Hdpeduct Home">
-        <img class="brand-mark" src="Images/logo_dark.png" alt="Hdpeduct" width="150" height="60">
+        <img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60">
       </a>
       <nav class="nav-links" id="navLinks" aria-label="Main navigation">
         <a href="#home">Home</a>
@@ -3150,7 +3150,7 @@
       <div class="nav-actions">
         <button class="header-search-toggle" id="headerSearchToggle" type="button" aria-label="Search products" aria-expanded="false"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.4"></circle><path d="m16 16 4.6 4.6"></path></svg></button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="true" title="Toggle dark mode"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.2 15.3A8.6 8.6 0 0 1 8.7 3.8 8.8 8.8 0 1 0 20.2 15.3Z"></path></svg></button>
-        <button class="login-trigger" id="loginTrigger" type="button">Admin Login</button>
+        <button class="login-trigger" id="adminOpenButton" type="button">Edit Website</button>
         <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
       </div>
       <form class="header-search-panel" id="headerSearchForm" role="search" hidden>
@@ -3268,7 +3268,7 @@
   <footer class="site-footer">
     <div class="container footer-main">
       <div class="footer-brand">
-        <a class="brand" href="#home" aria-label="Hdpeduct Home"><img class="brand-mark" src="Images/logo_dark.png" alt="Hdpeduct" width="150" height="60"></a>
+        <a class="brand" href="#home" aria-label="Hdpeduct Home"><img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60"></a>
         <p>HDPE ducting, microducts and fittings for telecom networks, alongside infrastructure products for power-sector and industrial projects.</p>
       </div>
       <div class="footer-links">
@@ -3319,22 +3319,10 @@
     </article>
   </div>
 
-  <div class="modal-backdrop" id="loginBackdrop" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-    <form class="login-modal" id="loginForm">
-      <button class="modal-close" id="closeLogin" type="button" aria-label="Close">×</button>
-      <h2 id="loginTitle">Admin Login</h2>
-      <p>Sign in to manage products, featured items and partners.</p>
-      <div class="form-field"><label for="adminEmail">Admin ID</label><input id="adminEmail" type="text" autocomplete="username" required placeholder="admin@hdpeduct"></div>
-      <div class="form-field"><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Enter password"></div>
-      <div class="form-error" id="loginError" aria-live="polite"></div>
-      <button class="button" type="submit">Sign In <span>→</span></button>
-    </form>
-  </div>
-
   <section class="admin-view" id="adminView" aria-label="Admin dashboard">
     <header class="admin-topbar">
-      <div class="admin-heading"><img class="brand-mark" src="Images/logo_dark.png" alt="Hdpeduct" width="150" height="60"><div><strong>Admin Dashboard</strong><small>Product and business management</small></div></div>
-      <div class="admin-actions"><button id="backToStore" type="button">← View website</button><button id="logoutButton" type="button">Log out</button></div>
+      <div class="admin-heading"><img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60"><div><strong>Website Editor</strong><small>Changes are saved in this browser</small></div></div>
+      <div class="admin-actions"><button id="backToStore" type="button">← View website</button><button id="logoutButton" type="button">Close editor</button></div>
     </header>
     <div class="admin-content">
       <div class="admin-welcome"><div><h1>Dashboard</h1><p>Manage your catalogue, featured products and partners.</p></div><div class="admin-welcome-actions"><button class="button" type="button" data-quick-action="addProductPanel">＋ Add product</button></div></div>
@@ -3351,7 +3339,7 @@
         <button class="admin-tab" type="button" data-panel="addProductPanel">Add Product</button>
         <button class="admin-tab" type="button" data-panel="partnersPanel">Partners</button>
         <button class="admin-tab" type="button" data-panel="heroSlidesPanel">Hero Slides</button>
-        <button class="admin-tab" type="button" data-panel="accountPanel">Account</button>
+        <button class="admin-tab" type="button" data-panel="accountPanel">Site Data</button>
       </div>
       <div class="admin-panel active" id="overviewPanel">
         <div class="admin-box quick-actions-box">
@@ -3423,17 +3411,37 @@
         </div>
       </div>
       <div class="admin-panel" id="accountPanel">
-        <form class="admin-box account-settings" id="passwordForm">
-          <h2>Change admin password</h2>
-          <p class="admin-panel-help">Update the password used to sign in to this admin dashboard.</p>
-          <div class="form-field"><label for="currentAdminPassword">Current password</label><input id="currentAdminPassword" type="password" autocomplete="current-password" required></div>
-          <div class="form-field"><label for="newAdminPassword">New password</label><input id="newAdminPassword" type="password" autocomplete="new-password" minlength="6" required></div>
-          <div class="form-field"><label for="confirmAdminPassword">Confirm new password</label><input id="confirmAdminPassword" type="password" autocomplete="new-password" minlength="6" required></div>
-          <button class="button" type="submit">Save password</button>
-        </form>
+        <div class="admin-box account-settings">
+          <form id="passwordForm">
+            <h2>Change admin password</h2>
+            <p class="admin-panel-help">This password is saved in this browser only. It is a convenience prompt, not secure authentication; visitors can inspect or change browser-side code and storage.</p>
+            <div class="form-field"><label for="currentAdminPassword">Current password</label><input id="currentAdminPassword" type="password" autocomplete="current-password" required></div>
+            <div class="form-field"><label for="newAdminPassword">New password</label><input id="newAdminPassword" type="password" autocomplete="new-password" minlength="12" required><small class="field-hint">Use at least 12 characters.</small></div>
+            <div class="form-field"><label for="confirmAdminPassword">Confirm new password</label><input id="confirmAdminPassword" type="password" autocomplete="new-password" minlength="12" required></div>
+            <button class="button" type="submit">Save password</button>
+          </form>
+          <h2>Site data backup</h2>
+          <p class="admin-panel-help">Products, images, homepage slides, and partners are stored on this device only. Export a backup to move them to another browser or device.</p>
+          <div class="admin-form-actions">
+            <button class="button" id="exportSiteData" type="button">Export site data</button>
+            <label class="button" for="importSiteData">Import site data</label>
+            <input id="importSiteData" type="file" accept="application/json,.json" hidden>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+  <div class="modal-backdrop" id="loginBackdrop" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <form class="login-modal" id="loginForm">
+      <button class="modal-close" id="closeLogin" type="button" aria-label="Close">×</button>
+      <h2 id="loginTitle">Admin Login</h2>
+      <p>This browser-only prompt does not protect the editor from visitors who can inspect the page or browser storage.</p>
+      <div class="form-field"><label for="adminEmail">Admin ID</label><input id="adminEmail" type="text" autocomplete="username" required value="admin@hdpeduct"></div>
+      <div class="form-field"><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Enter password"></div>
+      <div class="form-error" id="loginError" aria-live="polite"></div>
+      <button class="button" type="submit">Sign In <span>→</span></button>
+    </form>
+  </div>
   <div class="site-progress" title="Page scroll progress" role="group" aria-label="Page scroll progress">
     <div class="site-progress-track" aria-hidden="true"><span class="site-progress-fill" id="siteProgressFill"></span><output id="siteProgressLabel">0%</output></div>
     <input id="siteProgressInput" type="range" min="0" max="100" value="0" aria-label="Scroll through the full page" title="Drag to scroll through the page">
@@ -3496,14 +3504,36 @@
           return fallback;
         }
       };
+      const readAdminPassword = () => {
+        try {
+          return localStorage.getItem("hdpeduct-admin-password") || "admin";
+        } catch (error) {
+          console.error("Unable to read the admin password from browser storage.", error);
+          return "admin";
+        }
+      };
       const readArrayStore = (key, fallback) => {
         const value = readStore(key, fallback);
         if (Array.isArray(value)) return value;
         console.error(`Expected an array in browser storage for ${key}.`);
         return fallback;
       };
-      let categories = Array.from(new Set([...defaultCategories, ...readArrayStore("hdpeduct-categories", [])]));
-      let products = readArrayStore("hdpeduct-products", starterProducts);
+      const isValidProductList = value => Array.isArray(value) && value.every(product =>
+        product && typeof product.id === "string" && typeof product.name === "string" &&
+        typeof product.category === "string"
+      );
+      const savedSiteDataValue = readStore("hdpeduct-site-data", {});
+      const savedSiteData = savedSiteDataValue && typeof savedSiteDataValue === "object" &&
+        !Array.isArray(savedSiteDataValue) && isValidProductList(savedSiteDataValue.products)
+        ? savedSiteDataValue
+        : {};
+      let categories = Array.from(new Set([
+        ...defaultCategories,
+        ...(Array.isArray(savedSiteData.categories) ? savedSiteData.categories : readArrayStore("hdpeduct-categories", []))
+      ]));
+      const savedProducts = readArrayStore("hdpeduct-products", starterProducts);
+      let products = isValidProductList(savedSiteData.products) ? savedSiteData.products
+        : isValidProductList(savedProducts) ? savedProducts : starterProducts;
       const referenceMicroduct = starterProducts.find(product => product.id === "p7");
       const previousMicroductSpecs = "The Micro Duct 2 Way 12/08 mm is a high-density polyethylene (HDPE) microduct system engineered for modern telecom networks.";
       if (referenceMicroduct) {
@@ -3523,8 +3553,8 @@
       products.forEach(product => {
         if (!categories.includes(product.category)) categories.push(product.category);
       });
-      let partners = readArrayStore("hdpeduct-partners", starterPartners);
-      let heroSlides = readArrayStore("hdpeduct-hero-slides", starterHeroSlides)
+      let partners = Array.isArray(savedSiteData.partners) ? savedSiteData.partners : readArrayStore("hdpeduct-partners", starterPartners);
+      let heroSlides = (Array.isArray(savedSiteData.heroSlides) ? savedSiteData.heroSlides : readArrayStore("hdpeduct-hero-slides", starterHeroSlides))
         .filter(slide => slide && typeof slide === "object" && typeof slide.title === "string" && slide.title.trim())
         .map((slide, index) => ({
           id: typeof slide.id === "string" ? slide.id : `hero-${index + 1}`,
@@ -3536,14 +3566,12 @@
           buttonLabel: typeof slide.buttonLabel === "string" && slide.buttonLabel.trim() ? slide.buttonLabel.trim() : "Explore products",
           destination: typeof slide.destination === "string" ? slide.destination : "#catalog"
         }));
-      let adminSessionToken = "";
-      let sharedProductsStored = false;
       try {
         localStorage.removeItem("hdpeduct-reviews");
       } catch (error) {
         console.error("Unable to remove deprecated Hdpeduct review data from browser storage.", error);
       }
-      let sales = readArrayStore("hdpeduct-sales", []);
+      let sales = Array.isArray(savedSiteData.sales) ? savedSiteData.sales : readArrayStore("hdpeduct-sales", []);
       let selectedCategory = "All";
       let featureFilter = "all";
       let editingProductId = null;
@@ -3596,64 +3624,114 @@
         $("#newProductSpecs").value = sanitizeRichText($("#newProductSpecsEditor").innerHTML);
       }
       const getProductImages = product => Array.isArray(product.images) ? product.images : product.image ? [product.image] : [];
-      const API_BASE = window.BACKEND_API_URL || (window.location.protocol === "file:" ? "http://localhost:3000" : "");
-      function apiRequest(path, options = {}) {
-        const headers = new Headers(options.headers || {});
-        if (adminSessionToken) headers.set("Authorization", `Bearer ${adminSessionToken}`);
-        return fetch(`${API_BASE}${path}`, { ...options, headers });
-      }
-      async function loadSharedProducts() {
-        const response = await apiRequest("/api/products");
-        if (!response.ok) throw new Error("The shared product catalogue could not be loaded.");
-        const result = await response.json();
-        if (result.products !== null && !Array.isArray(result.products)) throw new Error("The server returned an invalid product catalogue.");
-        sharedProductsStored = Array.isArray(result.products);
-        if (sharedProductsStored) {
-          products = result.products;
-          products.forEach(product => {
-            if (product && product.category && !categories.includes(product.category)) categories.push(product.category);
-          });
-        }
-      }
-      async function saveSharedProducts() {
-        if (!adminSessionToken) throw new Error("Admin sign-in is required to save products.");
-        const serverProducts = await Promise.all(products.map(async product => {
-          const images = await Promise.all(getProductImages(product).map(async image => {
-            if (typeof image !== "string") throw new Error("A product image has an invalid value.");
-            if (!image.startsWith("data:")) return image;
-            const blob = await (await fetch(image)).blob();
-            if (blob.size > 5 * 1024 * 1024) throw new Error("A saved browser image is larger than the server's 5 MB limit.");
-            const formData = new FormData();
-            formData.append("image", blob, `product-image.${blob.type.split("/")[1] || "webp"}`);
-            const uploadResponse = await apiRequest("/upload", { method: "POST", body: formData });
-            const uploadResult = await uploadResponse.json();
-            if (!uploadResponse.ok || !uploadResult.imageUrl) throw new Error(uploadResult.error || "A product image could not be moved to the server.");
-            return uploadResult.imageUrl;
-          }));
-          return { ...product, images, image: images[0] || "" };
-        }));
-        const response = await apiRequest("/api/products", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ products: serverProducts })
-        });
-        if (!response.ok) {
-          const result = await response.json();
-          throw new Error(result.error || "The server could not save the product catalogue.");
-        }
-        products = serverProducts;
-        sharedProductsStored = true;
-      }
       const money = amount => `SAR ${Number(amount || 0).toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-      const persist = () => {
+      function currentSiteData() {
+        return { format: "hdpeduct-static-site", version: 1, products, categories, partners, heroSlides, sales };
+      }
+      function applySiteData(siteData) {
+        if (!siteData || !isValidProductList(siteData.products)) throw new Error("Stored website data is invalid.");
+        products = siteData.products;
+        categories = Array.from(new Set([
+          ...defaultCategories,
+          ...(Array.isArray(siteData.categories) ? siteData.categories.filter(category => typeof category === "string") : []),
+          ...products.map(product => product.category).filter(Boolean)
+        ]));
+        partners = Array.isArray(siteData.partners) && siteData.partners.every(partner =>
+          partner && typeof partner.id === "string" && typeof partner.name === "string"
+        ) ? siteData.partners : starterPartners;
+        heroSlides = Array.isArray(siteData.heroSlides) ? siteData.heroSlides.filter(slide =>
+          slide && typeof slide === "object" && typeof slide.title === "string"
+        ).map((slide, index) => ({
+          id: typeof slide.id === "string" ? slide.id : `hero-${index + 1}`,
+          type: slide.type === "product" && products.some(product => product.id === slide.productId) ? "product" : "story",
+          productId: typeof slide.productId === "string" ? slide.productId : "",
+          eyebrow: typeof slide.eyebrow === "string" ? slide.eyebrow : "",
+          title: typeof slide.title === "string" ? slide.title : "",
+          description: typeof slide.description === "string" ? slide.description : "",
+          buttonLabel: typeof slide.buttonLabel === "string" ? slide.buttonLabel : "Explore products",
+          destination: heroDestinations.has(slide.destination) ? slide.destination : "#catalog"
+        })) : [];
+        sales = Array.isArray(siteData.sales) ? siteData.sales.filter(sale =>
+          sale && typeof sale === "object" && Number.isFinite(Number(sale.quantity))
+        ) : [];
+        activeHeroSlide = 0;
+      }
+      function openLocalDatabase() {
+        return new Promise((resolve, reject) => {
+          if (!window.indexedDB) {
+            reject(new Error("IndexedDB is unavailable in this browser."));
+            return;
+          }
+          const request = indexedDB.open("hdpeduct-local-site", 1);
+          request.onupgradeneeded = () => {
+            if (!request.result.objectStoreNames.contains("site-data")) request.result.createObjectStore("site-data");
+          };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error || new Error("Could not open browser storage."));
+          request.onblocked = () => reject(new Error("Browser storage is blocked by another open site tab."));
+        });
+      }
+      async function readLocalDatabase() {
+        const database = await openLocalDatabase();
+        return new Promise((resolve, reject) => {
+          const request = database.transaction("site-data", "readonly").objectStore("site-data").get("current");
+          request.onsuccess = () => {
+            database.close();
+            resolve(request.result || null);
+          };
+          request.onerror = () => {
+            database.close();
+            reject(request.error || new Error("Could not read browser storage."));
+          };
+        });
+      }
+      async function writeLocalDatabase(siteData) {
+        const database = await openLocalDatabase();
+        return new Promise((resolve, reject) => {
+          const transaction = database.transaction("site-data", "readwrite");
+          transaction.objectStore("site-data").put(siteData, "current");
+          transaction.oncomplete = () => {
+            database.close();
+            resolve();
+          };
+          transaction.onerror = transaction.onabort = () => {
+            database.close();
+            reject(transaction.error || new Error("Could not save browser storage."));
+          };
+        });
+      }
+      async function loadLocalSiteData() {
         try {
-          localStorage.setItem("hdpeduct-categories", JSON.stringify(categories));
-          localStorage.setItem("hdpeduct-partners", JSON.stringify(partners));
-          localStorage.setItem("hdpeduct-hero-slides", JSON.stringify(heroSlides));
-          localStorage.setItem("hdpeduct-sales", JSON.stringify(sales));
+          const stored = await readLocalDatabase();
+          if (stored && isValidProductList(stored.products)) {
+            applySiteData(stored);
+            return;
+          }
         } catch (error) {
-          console.error("Unable to save Hdpeduct admin data in browser storage.", error);
-          showNotice("Could not save changes to browser storage.");
+          console.warn("IndexedDB is unavailable; using localStorage when possible.", error);
+        }
+        if (isValidProductList(savedSiteData.products)) {
+          applySiteData(savedSiteData);
+          await persist();
+          return;
+        }
+        await persist();
+      }
+      const persist = async () => {
+        const siteData = currentSiteData();
+        try {
+          await writeLocalDatabase(siteData);
+          return true;
+        } catch (indexedDbError) {
+          console.warn("Could not save to IndexedDB; trying localStorage.", indexedDbError);
+          try {
+            localStorage.setItem("hdpeduct-site-data", JSON.stringify(siteData));
+            return true;
+          } catch (localStorageError) {
+            console.error("Unable to save Hdpeduct data in browser storage.", localStorageError);
+            showNotice("Could not save changes in this browser. Export a backup and free some storage.");
+            return false;
+          }
         }
       };
       function compressProductImage(file) {
@@ -3767,10 +3845,15 @@
           $("#cancelPartnerEdit").hidden = false;
           $("#partnerName").focus();
         }));
-        $$("[data-delete-partner]").forEach(button => button.addEventListener("click", () => {
-          if (editingPartnerId === button.dataset.deletePartner) resetPartnerForm();
+        $$("[data-delete-partner]").forEach(button => button.addEventListener("click", async () => {
+          const previousPartners = partners;
           partners = partners.filter(partner => partner.id !== button.dataset.deletePartner);
-          persist();
+          if (!await persist()) {
+            partners = previousPartners;
+            renderAll();
+            return;
+          }
+          if (editingPartnerId === button.dataset.deletePartner) resetPartnerForm();
           renderAll();
           showNotice("Partner removed.");
         }));
@@ -3935,7 +4018,7 @@
       function closeProductDetail() {
         $("#productDetail").classList.remove("open");
         $("#productDetail").setAttribute("aria-hidden", "true");
-        if (!$("#loginBackdrop").classList.contains("open") && !$("#adminView").classList.contains("open")) document.body.style.overflow = "";
+        if (!$("#adminView").classList.contains("open")) document.body.style.overflow = "";
         if (detailTrigger && document.contains(detailTrigger)) detailTrigger.focus();
         detailTrigger = null;
       }
@@ -3970,7 +4053,7 @@
         if (!dialog.classList.contains("open")) return;
         dialog.classList.remove("open");
         dialog.setAttribute("aria-hidden", "true");
-        if (!$("#loginBackdrop").classList.contains("open") && !$("#adminView").classList.contains("open") && !$("#productDetail").classList.contains("open")) document.body.style.overflow = "";
+        if (!$("#adminView").classList.contains("open") && !$("#productDetail").classList.contains("open")) document.body.style.overflow = "";
         if (restoreFocus && contactTrigger && document.contains(contactTrigger)) contactTrigger.focus();
         contactTrigger = null;
       }
@@ -4003,16 +4086,11 @@
           if (!product) return;
           const previousProducts = products;
           products = products.map(item => item.id === product.id ? { ...item, featured: !item.featured } : item);
-          try {
-            await saveSharedProducts();
-          } catch (error) {
-            console.error("Unable to save the featured product change.", error);
+          if (!await persist()) {
             products = previousProducts;
             renderAll();
-            showNotice("Could not save this change to the shared product catalogue.");
             return;
           }
-          persist();
           renderAll();
           showNotice(products.find(item => item.id === product.id).featured ? "Product added to Top Interesting." : "Product removed from Top Interesting.");
         }));
@@ -4053,17 +4131,12 @@
           products = products.filter(product => product.id !== removedProductId);
           heroSlides = heroSlides.filter(slide => slide.type !== "product" || slide.productId !== removedProductId);
           activeHeroSlide = Math.min(activeHeroSlide, heroSlides.length - 1);
-          try {
-            await saveSharedProducts();
-          } catch (error) {
-            console.error("Unable to remove the product from the shared catalogue.", error);
+          if (!await persist()) {
             products = previousProducts;
             heroSlides = previousHeroSlides;
             renderAll();
-            showNotice("Could not remove this product from the shared catalogue.");
             return;
           }
-          persist();
           renderAll();
           showNotice("Product removed.");
         }));
@@ -4188,14 +4261,21 @@
           $("#cancelHeroSlideEdit").hidden = false;
           $("#heroSlideTitle").focus();
         }));
-        $$("[data-remove-hero-slide]").forEach(button => button.addEventListener("click", () => {
+        $$("[data-remove-hero-slide]").forEach(button => button.addEventListener("click", async () => {
           const removedIndex = heroSlides.findIndex(item => item.id === button.dataset.removeHeroSlide);
           if (removedIndex < 0) return;
+          const previousHeroSlides = heroSlides;
+          const previousActiveHeroSlide = activeHeroSlide;
           heroSlides = heroSlides.filter(item => item.id !== button.dataset.removeHeroSlide);
           if (removedIndex < activeHeroSlide) activeHeroSlide--;
           else if (removedIndex === activeHeroSlide) activeHeroSlide = Math.min(activeHeroSlide, heroSlides.length - 1);
+          if (!await persist()) {
+            heroSlides = previousHeroSlides;
+            activeHeroSlide = previousActiveHeroSlide;
+            renderAll();
+            return;
+          }
           if (editingHeroSlideId === button.dataset.removeHeroSlide) resetHeroSlideForm();
-          persist();
           renderAll();
           showNotice("Homepage slide removed.");
         }));
@@ -4246,7 +4326,7 @@
       const themeMeta = $('meta[name="theme-color"]');
       function applyTheme(theme, persistPreference) {
         const dark = theme === "dark";
-        const logoPath = dark ? "Images/logo_dark.png" : "Images/logo.png";
+        const logoPath = "Images/logo.png";
         document.body.dataset.theme = dark ? "dark" : "light";
         document.querySelectorAll(".brand-mark").forEach(image => image.src = logoPath);
         document.querySelector('link[rel="icon"]').href = logoPath;
@@ -4455,16 +4535,41 @@
         $("#menuToggle").setAttribute("aria-expanded", "false");
         $(".nav-products").open = false;
       }));
+      const openAdminView = () => {
+        $("#adminView").classList.add("open");
+        document.body.style.overflow = "hidden";
+        renderAdmin();
+      };
       const openLogin = () => {
         $("#loginBackdrop").classList.add("open");
         $("#loginError").textContent = "";
+        document.body.style.overflow = "hidden";
         $("#adminEmail").focus();
       };
-      const closeLogin = () => $("#loginBackdrop").classList.remove("open");
-      $("#loginTrigger").addEventListener("click", openLogin);
+      const closeLogin = () => {
+        $("#loginBackdrop").classList.remove("open");
+        if (!$("#adminView").classList.contains("open")) document.body.style.overflow = "";
+      };
+      function openAdmin() {
+        openLogin();
+      }
+      $("#adminOpenButton").addEventListener("click", openAdmin);
       $("#closeLogin").addEventListener("click", closeLogin);
       $("#loginBackdrop").addEventListener("click", event => {
         if (event.target === $("#loginBackdrop")) closeLogin();
+      });
+      $("#loginForm").addEventListener("submit", event => {
+        event.preventDefault();
+        const adminEmail = $("#adminEmail").value.trim();
+        const adminPassword = $("#adminPassword").value;
+        const currentPassword = readAdminPassword();
+        if (adminEmail === "admin@hdpeduct" && adminPassword === currentPassword) {
+          $("#loginForm").reset();
+          closeLogin();
+          openAdminView();
+        } else {
+          $("#loginError").textContent = "Invalid Admin ID or Password.";
+        }
       });
       document.addEventListener("keydown", event => {
         if (event.key === "Escape" && $("#contact").classList.contains("open")) closeContactDialog();
@@ -4473,96 +4578,42 @@
           $("#headerSearchToggle").setAttribute("aria-expanded", "false");
           $("#headerSearchToggle").focus();
         }
-        if (event.key === "Escape") closeLogin();
-      });
-      $("#loginForm").addEventListener("submit", async event => {
-        event.preventDefault();
-        const email = $("#adminEmail").value.trim().toLowerCase();
-        const password = $("#adminPassword").value;
-        if (email !== "admin@hdpeduct") {
-          $("#loginError").textContent = "Email or password is incorrect.";
-          return;
+        if (event.key === "Escape") {
+          closeLogin();
+          closeAdmin();
         }
-        const submitButton = $("#loginForm button[type='submit']");
-        submitButton.disabled = true;
-        try {
-          const response = await apiRequest("/api/admin/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-          });
-          const result = await response.json();
-          if (!response.ok || !result.token) {
-            $("#loginError").textContent = result.error || "Email or password is incorrect.";
-            return;
-          }
-          adminSessionToken = result.token;
-          await loadSharedProducts();
-          if (!sharedProductsStored) await saveSharedProducts();
-          renderAll();
-        } catch (error) {
-          console.error("Unable to sign in to the shared product service.", error);
-          $("#loginError").textContent = "Could not connect to the server. Check your connection and try again.";
-          return;
-        } finally {
-          submitButton.disabled = false;
-        }
-        closeLogin();
-        $("#loginForm").reset();
-        $("#adminView").classList.add("open");
-        document.body.style.overflow = "hidden";
-        renderAdmin();
       });
       const closeAdmin = () => {
         $("#adminView").classList.remove("open");
         document.body.style.overflow = "";
       };
       $("#backToStore").addEventListener("click", closeAdmin);
-      $("#logoutButton").addEventListener("click", async () => {
-        const token = adminSessionToken;
-        adminSessionToken = "";
+      $("#logoutButton").addEventListener("click", () => {
         closeAdmin();
-        if (token) {
-          try {
-            const response = await fetch(`${API_BASE}/api/admin/logout`, {
-              method: "POST",
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error("Server could not end the admin session.");
-          } catch (error) {
-            console.error("Unable to end the admin session on the server.", error);
-          }
-        }
+        showNotice("You have been signed out.");
       });
-      $("#passwordForm").addEventListener("submit", async event => {
+      $("#passwordForm").addEventListener("submit", event => {
         event.preventDefault();
+        const form = event.currentTarget;
         const currentPassword = $("#currentAdminPassword").value;
         const newPassword = $("#newAdminPassword").value;
-        const confirmedPassword = $("#confirmAdminPassword").value;
-        if (newPassword.length < 6) {
-          showNotice("New password must be at least 6 characters.");
+        const savedPassword = readAdminPassword();
+        if (currentPassword !== savedPassword) {
+          showNotice("Current password is incorrect.");
           return;
         }
-        if (newPassword !== confirmedPassword) {
+        if (newPassword !== $("#confirmAdminPassword").value) {
           showNotice("New password and confirmation do not match.");
           return;
         }
         try {
-          const response = await apiRequest("/api/admin/password", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ currentPassword, newPassword })
-          });
-          const result = await response.json();
-          if (!response.ok || !result.token) throw new Error(result.error || "Could not update the admin password.");
-          adminSessionToken = result.token;
+          localStorage.setItem("hdpeduct-admin-password", newPassword);
+          form.reset();
+          showNotice("Admin password updated.");
         } catch (error) {
-          console.error("Unable to update the server admin password.", error);
-          showNotice(error.message || "Could not update the server admin password.");
-          return;
+          console.error("Unable to save the admin password in browser storage.", error);
+          showNotice("Could not save the admin password in this browser.");
         }
-        event.currentTarget.reset();
-        showNotice("Admin password updated on the server.");
       });
       $$(".admin-tab").forEach(tab => tab.addEventListener("click", () => {
         $$(".admin-tab").forEach(item => item.classList.toggle("active", item === tab));
@@ -4617,34 +4668,6 @@
           return;
         }
         const savedProductImages = productImages.slice();
-        saveButton.disabled = filesToUpload.some(Boolean);
-        try {
-          for (let index = 0; index < filesToUpload.length; index += 1) {
-            const file = filesToUpload[index];
-            if (!file) continue;
-            const formData = new FormData();
-            formData.append("image", file);
-            const response = await apiRequest("/upload", {
-              method: "POST",
-              body: formData
-            });
-            if (!response.ok) {
-              const result = await response.json();
-              throw new Error(result.error || "Image upload failed.");
-            }
-            const result = await response.json();
-            const filename = (result.file && result.file.filename) || result.filename;
-            if (!filename) throw new Error("Upload response did not include the saved filename.");
-            const backendImageUrl = result.imageUrl || `/images/${filename}`;
-            savedProductImages[index] = backendImageUrl;
-          }
-        } catch (error) {
-          console.error("Unable to upload product images.", error);
-          showNotice("Could not upload product images. Please try again.");
-          return;
-        } finally {
-          saveButton.disabled = false;
-        }
         const previousProducts = products;
         if (editingProductId) {
           products = products.map(product => product.id === editingProductId
@@ -4653,18 +4676,14 @@
         } else {
           products.unshift({ id: `p-${Date.now()}`, name, category, featureCategory: category, price: 0, description, technicalSpecs, stock, images: savedProductImages, image: savedProductImages[0], badge, featured, newArrival });
         }
-        try {
-          await saveSharedProducts();
-        } catch (error) {
-          console.error("Unable to save the product to the shared catalogue.", error);
+        if (!await persist()) {
           products = previousProducts;
-          showNotice("Could not save this product to the shared catalogue.");
+          renderAdmin();
           return;
         }
         const savedProductId = editingProductId;
         const wasEditing = Boolean(savedProductId);
         resetProductForm();
-        persist();
         renderAll();
         if (wasEditing) {
           const editButton = $(`#adminProducts [data-edit-product="${CSS.escape(savedProductId)}"]`);
@@ -4744,7 +4763,7 @@
         const nextCount = selectedCount + ($("#newProductFeatured").checked && !currentProduct?.featured ? 1 : 0) - (!$("#newProductFeatured").checked && currentProduct?.featured ? 1 : 0);
         $("#featuredSlotsHint").textContent = `${nextCount} featured`;
       });
-      $("#addCategoryButton").addEventListener("click", () => {
+      $("#addCategoryButton").addEventListener("click", async () => {
         const newCategory = $("#newCategoryName").value.trim();
         if (!newCategory) {
           showNotice("Enter a category name first.");
@@ -4755,8 +4774,11 @@
           return;
         }
         categories.push(newCategory);
+        if (!await persist()) {
+          categories.pop();
+          return;
+        }
         $("#newCategoryName").value = "";
-        persist();
         renderAdmin();
         $("#newProductCategory").value = newCategory;
         showNotice("Category added.");
@@ -4782,7 +4804,7 @@
           syncRichEditors();
         });
       });
-      $("#heroSlidesForm").addEventListener("submit", event => {
+      $("#heroSlidesForm").addEventListener("submit", async event => {
         event.preventDefault();
         const productSlide = $("#heroSlideType").value === "product";
         const selectedProduct = products.find(product => product.id === $("#heroSlideProduct").value);
@@ -4808,16 +4830,23 @@
           buttonLabel: productSlide ? "View product details" : buttonLabel,
           destination: productSlide ? "#catalog" : heroDestinations.has($("#heroSlideDestination").value) ? $("#heroSlideDestination").value : "#catalog"
         };
+        const previousHeroSlides = heroSlides;
+        const previousActiveHeroSlide = activeHeroSlide;
         if (wasEditing) heroSlides = heroSlides.map(item => item.id === editingHeroSlideId ? slide : item);
         else heroSlides.push(slide);
         activeHeroSlide = heroSlides.findIndex(item => item.id === slide.id);
+        if (!await persist()) {
+          heroSlides = previousHeroSlides;
+          activeHeroSlide = previousActiveHeroSlide;
+          renderAll();
+          return;
+        }
         resetHeroSlideForm();
-        persist();
         renderAll();
         showNotice(wasEditing ? "Homepage slide updated." : "Homepage slide added.");
       });
       $("#cancelHeroSlideEdit").addEventListener("click", resetHeroSlideForm);
-      $("#partnerForm").addEventListener("submit", event => {
+      $("#partnerForm").addEventListener("submit", async event => {
         event.preventDefault();
         const wasEditing = Boolean(editingPartnerId);
         const name = $("#partnerName").value.trim();
@@ -4826,21 +4855,107 @@
           showNotice("Enter a partner or organization name.");
           return;
         }
+        const previousPartners = partners;
         if (editingPartnerId) {
           partners = partners.map(partner => partner.id === editingPartnerId ? { ...partner, name, description } : partner);
         } else {
           partners.push({ id: `partner-${Date.now()}`, name, description });
         }
-        persist();
+        if (!await persist()) {
+          partners = previousPartners;
+          renderAll();
+          return;
+        }
         renderAll();
         resetPartnerForm();
         showNotice(wasEditing ? "Partner updated." : "Partner added to the website.");
       });
       $("#cancelPartnerEdit").addEventListener("click", resetPartnerForm);
-      loadSharedProducts()
+      $("#exportSiteData").addEventListener("click", () => {
+        const data = {
+          format: "hdpeduct-static-site",
+          version: 1,
+          products,
+          categories,
+          partners,
+          heroSlides,
+          sales
+        };
+        const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
+        const download = document.createElement("a");
+        download.href = url;
+        download.download = "hdpeduct-site-data.json";
+        download.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showNotice("Site data exported.");
+      });
+      $("#importSiteData").addEventListener("change", async event => {
+        const input = event.currentTarget;
+        const file = input.files[0];
+        if (!file) return;
+        const previousData = { products, categories, partners, heroSlides, sales };
+        try {
+          const imported = JSON.parse(await file.text());
+          if (!imported || typeof imported !== "object" || Array.isArray(imported)) {
+            throw new Error("This file is not a valid Hdpeduct site data export.");
+          }
+          const validProducts = Array.isArray(imported.products) && imported.products.every(product =>
+            product && typeof product.id === "string" && typeof product.name === "string" &&
+            typeof product.category === "string" &&
+            (product.price === undefined || (typeof product.price === "number" && Number.isFinite(product.price))) &&
+            (product.image === undefined || typeof product.image === "string") &&
+            (!product.images || (Array.isArray(product.images) && product.images.every(image => typeof image === "string")))
+          );
+          const validCategories = Array.isArray(imported.categories) && imported.categories.every(category => typeof category === "string");
+          const validPartners = Array.isArray(imported.partners) && imported.partners.every(partner =>
+            partner && typeof partner.id === "string" && typeof partner.name === "string" &&
+            (partner.description === undefined || typeof partner.description === "string")
+          );
+          const validSlides = Array.isArray(imported.heroSlides) && imported.heroSlides.every(slide =>
+            slide && typeof slide.id === "string" && typeof slide.title === "string" &&
+            typeof slide.description === "string" && typeof slide.buttonLabel === "string"
+          );
+          const validSales = Array.isArray(imported.sales) && imported.sales.every(sale =>
+            sale && typeof sale === "object" && !Array.isArray(sale) &&
+            Number.isFinite(Number(sale.quantity))
+          );
+          if (imported.format !== "hdpeduct-static-site" || imported.version !== 1 ||
+              !validProducts || !validCategories || !validPartners || !validSlides || !validSales) {
+            throw new Error("This file is not a valid Hdpeduct site data export.");
+          }
+          products = imported.products;
+          categories = Array.from(new Set([
+            ...defaultCategories,
+            ...imported.categories,
+            ...products.map(product => product.category)
+          ]));
+          partners = imported.partners;
+          heroSlides = imported.heroSlides.map(slide => ({
+            ...slide,
+            type: slide.type === "product" && products.some(product => product.id === slide.productId) ? "product" : "story",
+            productId: typeof slide.productId === "string" ? slide.productId : "",
+            destination: heroDestinations.has(slide.destination) ? slide.destination : "#catalog"
+          }));
+          sales = imported.sales;
+          activeHeroSlide = 0;
+          if (!await persist()) {
+            ({ products, categories, partners, heroSlides, sales } = previousData);
+            renderAll();
+            return;
+          }
+          renderAll();
+          showNotice("Site data imported and saved in this browser.");
+        } catch (error) {
+          console.error("Unable to import Hdpeduct site data.", error);
+          showNotice(error instanceof SyntaxError ? "The selected file is not valid JSON." : error.message);
+        } finally {
+          input.value = "";
+        }
+      });
+      loadLocalSiteData()
         .catch(error => {
-          console.error("Unable to load the shared product catalogue.", error);
-          showNotice("Could not load products from the server. Showing this browser’s saved catalogue until the server is available.");
+          console.error("Unable to load local website data.", error);
+          showNotice("Could not load saved changes. Showing the starter website data.");
         })
         .finally(renderAll);
     })();
