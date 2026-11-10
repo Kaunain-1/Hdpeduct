@@ -3321,7 +3321,7 @@
 
   <section class="admin-view" id="adminView" aria-label="Admin dashboard">
     <header class="admin-topbar">
-      <div class="admin-heading"><img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60"><div><strong>Website Editor</strong><small>Changes are saved in this browser</small></div></div>
+      <div class="admin-heading"><img class="brand-mark" src="Images/logo.png" alt="Hdpeduct" width="150" height="60"><div><strong>Website Editor</strong><small>Changes are shared through Supabase</small></div></div>
       <div class="admin-actions"><button id="backToStore" type="button">← View website</button><button id="logoutButton" type="button">Close editor</button></div>
     </header>
     <div class="admin-content">
@@ -3414,8 +3414,7 @@
         <div class="admin-box account-settings">
           <form id="passwordForm">
             <h2>Change admin password</h2>
-            <p class="admin-panel-help">This password is saved in this browser only. It is a convenience prompt, not secure authentication; visitors can inspect or change browser-side code and storage.</p>
-            <div class="form-field"><label for="currentAdminPassword">Current password</label><input id="currentAdminPassword" type="password" autocomplete="current-password" required></div>
+            <p class="admin-panel-help">Your authenticated Supabase account password is updated securely through Supabase Auth.</p>
             <div class="form-field"><label for="newAdminPassword">New password</label><input id="newAdminPassword" type="password" autocomplete="new-password" minlength="12" required><small class="field-hint">Use at least 12 characters.</small></div>
             <div class="form-field"><label for="confirmAdminPassword">Confirm new password</label><input id="confirmAdminPassword" type="password" autocomplete="new-password" minlength="12" required></div>
             <button class="button" type="submit">Save password</button>
@@ -3429,7 +3428,7 @@
             <p class="form-error" id="cloudinarySettingsError" aria-live="polite"></p>
           </form>
           <h2>Site data backup</h2>
-          <p class="admin-panel-help">Products, images, homepage slides, and partners are stored on this device only. Export a backup to move them to another browser or device.</p>
+          <p class="admin-panel-help">Products, categories, partners, homepage slides, and sales are loaded from and saved to your Supabase project.</p>
           <div class="admin-form-actions">
             <button class="button" id="exportSiteData" type="button">Export site data</button>
             <label class="button" for="importSiteData">Import site data</label>
@@ -3443,8 +3442,8 @@
     <form class="login-modal" id="loginForm">
       <button class="modal-close" id="closeLogin" type="button" aria-label="Close">×</button>
       <h2 id="loginTitle">Admin Login</h2>
-      <p>This browser-only prompt does not protect the editor from visitors who can inspect the page or browser storage.</p>
-      <div class="form-field"><label for="adminEmail">Admin ID</label><input id="adminEmail" type="text" autocomplete="username" required value="admin@hdpeduct"></div>
+      <p>Sign in with an administrator account that has been authorized for this Supabase project.</p>
+      <div class="form-field"><label for="adminEmail">Admin email</label><input id="adminEmail" type="email" autocomplete="username" required placeholder="admin@example.com"></div>
       <div class="form-field"><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Enter password"></div>
       <div class="form-error" id="loginError" aria-live="polite"></div>
       <button class="button" type="submit">Sign In <span>→</span></button>
@@ -3456,7 +3455,15 @@
   </div>
   <div class="notice" id="notice" role="status" aria-live="polite"></div>
 
-  <script>
+  <script type="module">
+    import { createClient } from "@supabase/supabase-js";
+
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
+    const supabase = supabaseUrl && supabaseAnonKey
+      ? createClient(supabaseUrl, supabaseAnonKey)
+      : null;
+
     (() => {
       const defaultCategories = [
         "HDPE Microducts", "HDPE Miniducts", "HDPE Main Ducts", "On Site Equipments",
@@ -3503,45 +3510,12 @@
         { id: "hero2", eyebrow: "Built for better connections", title: "Infrastructure that moves us forward.", description: "Reliable ducting solutions help connect communities, businesses and the networks we count on.", buttonLabel: "Explore products", destination: "#products" },
         { id: "hero3", eyebrow: "Engineered in Saudi Arabia", title: "Made for the networks we count on.", description: "Discover practical, durable solutions for telecom, utilities and infrastructure projects.", buttonLabel: "Meet Hdpeduct", destination: "#about" }
       ];
-      const readStore = (key, fallback) => {
-        try {
-          const value = localStorage.getItem(key);
-          return value ? JSON.parse(value) : fallback;
-        } catch (error) {
-          console.error(`Unable to read ${key} from browser storage.`, error);
-          return fallback;
-        }
-      };
-      const readAdminPassword = () => {
-        try {
-          return localStorage.getItem("hdpeduct-admin-password") || "admin";
-        } catch (error) {
-          console.error("Unable to read the admin password from browser storage.", error);
-          return "admin";
-        }
-      };
-      const readArrayStore = (key, fallback) => {
-        const value = readStore(key, fallback);
-        if (Array.isArray(value)) return value;
-        console.error(`Expected an array in browser storage for ${key}.`);
-        return fallback;
-      };
       const isValidProductList = value => Array.isArray(value) && value.every(product =>
         product && typeof product.id === "string" && typeof product.name === "string" &&
         typeof product.category === "string"
       );
-      const savedSiteDataValue = readStore("hdpeduct-site-data", {});
-      const savedSiteData = savedSiteDataValue && typeof savedSiteDataValue === "object" &&
-        !Array.isArray(savedSiteDataValue) && isValidProductList(savedSiteDataValue.products)
-        ? savedSiteDataValue
-        : {};
-      let categories = Array.from(new Set([
-        ...defaultCategories,
-        ...(Array.isArray(savedSiteData.categories) ? savedSiteData.categories : readArrayStore("hdpeduct-categories", []))
-      ]));
-      const savedProducts = readArrayStore("hdpeduct-products", starterProducts);
-      let products = isValidProductList(savedSiteData.products) ? savedSiteData.products
-        : isValidProductList(savedProducts) ? savedProducts : starterProducts;
+      let categories = defaultCategories.slice();
+      let products = starterProducts.map(product => ({ ...product }));
       const referenceMicroduct = starterProducts.find(product => product.id === "p7");
       const previousMicroductSpecs = "The Micro Duct 2 Way 12/08 mm is a high-density polyethylene (HDPE) microduct system engineered for modern telecom networks.";
       if (referenceMicroduct) {
@@ -3561,8 +3535,8 @@
       products.forEach(product => {
         if (!categories.includes(product.category)) categories.push(product.category);
       });
-      let partners = Array.isArray(savedSiteData.partners) ? savedSiteData.partners : readArrayStore("hdpeduct-partners", starterPartners);
-      let heroSlides = (Array.isArray(savedSiteData.heroSlides) ? savedSiteData.heroSlides : readArrayStore("hdpeduct-hero-slides", starterHeroSlides))
+      let partners = starterPartners.map(partner => ({ ...partner }));
+      let heroSlides = starterHeroSlides
         .filter(slide => slide && typeof slide === "object" && typeof slide.title === "string" && slide.title.trim())
         .map((slide, index) => ({
           id: typeof slide.id === "string" ? slide.id : `hero-${index + 1}`,
@@ -3574,12 +3548,8 @@
           buttonLabel: typeof slide.buttonLabel === "string" && slide.buttonLabel.trim() ? slide.buttonLabel.trim() : "Explore products",
           destination: typeof slide.destination === "string" ? slide.destination : "#catalog"
         }));
-      try {
-        localStorage.removeItem("hdpeduct-reviews");
-      } catch (error) {
-        console.error("Unable to remove deprecated Hdpeduct review data from browser storage.", error);
-      }
-      let sales = Array.isArray(savedSiteData.sales) ? savedSiteData.sales : readArrayStore("hdpeduct-sales", []);
+      let sales = [];
+      let cloudinarySettings = null;
       let selectedCategory = "All";
       let featureFilter = "all";
       let editingProductId = null;
@@ -3592,6 +3562,8 @@
       let editingHeroSlideId = null;
       let activeHeroSlide = 0;
       let heroCarouselTimer = null;
+      let supabaseReady = false;
+      let remoteProductIds = new Set();
       const $ = (selector, parent = document) => parent.querySelector(selector);
       const $$ = (selector, parent = document) => Array.from(parent.querySelectorAll(selector));
       const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
@@ -3634,11 +3606,14 @@
       const getProductImages = product => Array.isArray(product.images) ? product.images : product.image ? [product.image] : [];
       const money = amount => `SAR ${Number(amount || 0).toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       function currentSiteData() {
-        return { format: "hdpeduct-static-site", version: 1, products, categories, partners, heroSlides, sales };
+        return { format: "hdpeduct-static-site", version: 1, products, categories, partners, heroSlides, sales, cloudinarySettings };
+      }
+      function currentSiteContent() {
+        return { categories, partners, heroSlides, sales, cloudinarySettings };
       }
       function applySiteData(siteData) {
-        if (!siteData || !isValidProductList(siteData.products)) throw new Error("Stored website data is invalid.");
-        products = siteData.products;
+        if (!siteData || !isValidProductList(siteData.products)) throw new Error("Supabase returned invalid product data.");
+        products = siteData.products.map(product => ({ ...product }));
         categories = Array.from(new Set([
           ...defaultCategories,
           ...(Array.isArray(siteData.categories) ? siteData.categories.filter(category => typeof category === "string") : []),
@@ -3662,94 +3637,79 @@
         sales = Array.isArray(siteData.sales) ? siteData.sales.filter(sale =>
           sale && typeof sale === "object" && Number.isFinite(Number(sale.quantity))
         ) : [];
+        cloudinarySettings = siteData.cloudinarySettings &&
+          typeof siteData.cloudinarySettings.cloudName === "string" &&
+          typeof siteData.cloudinarySettings.uploadPreset === "string"
+          ? {
+            cloudName: siteData.cloudinarySettings.cloudName,
+            uploadPreset: siteData.cloudinarySettings.uploadPreset
+          }
+          : null;
         activeHeroSlide = 0;
       }
-      function openLocalDatabase() {
-        return new Promise((resolve, reject) => {
-          if (!window.indexedDB) {
-            reject(new Error("IndexedDB is unavailable in this browser."));
-            return;
-          }
-          const request = indexedDB.open("hdpeduct-local-site", 1);
-          request.onupgradeneeded = () => {
-            if (!request.result.objectStoreNames.contains("site-data")) request.result.createObjectStore("site-data");
-          };
-          request.onsuccess = () => resolve(request.result);
-          request.onerror = () => reject(request.error || new Error("Could not open browser storage."));
-          request.onblocked = () => reject(new Error("Browser storage is blocked by another open site tab."));
-        });
-      }
-      async function readLocalDatabase() {
-        const database = await openLocalDatabase();
-        return new Promise((resolve, reject) => {
-          const request = database.transaction("site-data", "readonly").objectStore("site-data").get("current");
-          request.onsuccess = () => {
-            database.close();
-            resolve(request.result || null);
-          };
-          request.onerror = () => {
-            database.close();
-            reject(request.error || new Error("Could not read browser storage."));
-          };
-        });
-      }
-      async function writeLocalDatabase(siteData) {
-        const database = await openLocalDatabase();
-        return new Promise((resolve, reject) => {
-          const transaction = database.transaction("site-data", "readwrite");
-          transaction.objectStore("site-data").put(siteData, "current");
-          transaction.oncomplete = () => {
-            database.close();
-            resolve();
-          };
-          transaction.onerror = transaction.onabort = () => {
-            database.close();
-            reject(transaction.error || new Error("Could not save browser storage."));
-          };
-        });
-      }
-      async function loadLocalSiteData() {
-        try {
-          const stored = await readLocalDatabase();
-          if (stored && isValidProductList(stored.products)) {
-            applySiteData(stored);
-            return;
-          }
-        } catch (error) {
-          console.warn("IndexedDB is unavailable; using localStorage when possible.", error);
+      async function loadSupabaseSiteData() {
+        if (!supabase) {
+          throw new Error("Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, then rebuild the site.");
         }
-        if (isValidProductList(savedSiteData.products)) {
-          applySiteData(savedSiteData);
-          await persist();
-          return;
-        }
-        await persist();
+        const [productsResult, contentResult] = await Promise.all([
+          supabase.from("products").select("id,sort_order,data").order("sort_order", { ascending: true }),
+          supabase.from("site_content").select("data").eq("id", 1).maybeSingle()
+        ]);
+        if (productsResult.error) throw productsResult.error;
+        if (contentResult.error) throw contentResult.error;
+        const rows = productsResult.data || [];
+        const databaseProducts = rows.map(row => row.data).filter(product =>
+          product && typeof product.id === "string" && typeof product.name === "string" &&
+          typeof product.category === "string"
+        );
+        const siteContent = contentResult.data && contentResult.data.data &&
+          typeof contentResult.data.data === "object" && !Array.isArray(contentResult.data.data)
+          ? contentResult.data.data
+          : {};
+        applySiteData({
+          ...siteContent,
+          products: databaseProducts.length ? databaseProducts : starterProducts
+        });
+        remoteProductIds = new Set(databaseProducts.map(product => product.id));
+        supabaseReady = true;
+        $("#cloudinaryCloudName").value = cloudinarySettings ? cloudinarySettings.cloudName : "";
+        $("#cloudinaryUploadPreset").value = cloudinarySettings ? cloudinarySettings.uploadPreset : "";
       }
       const persist = async () => {
-        const siteData = currentSiteData();
+        if (!supabase || !supabaseReady) {
+          showNotice("Changes were not saved. Supabase is not connected; check the project settings and try again.");
+          return false;
+        }
         try {
-          await writeLocalDatabase(siteData);
-          return true;
-        } catch (indexedDbError) {
-          console.warn("Could not save to IndexedDB; trying localStorage.", indexedDbError);
-          try {
-            localStorage.setItem("hdpeduct-site-data", JSON.stringify(siteData));
-            return true;
-          } catch (localStorageError) {
-            console.error("Unable to save Hdpeduct data in browser storage.", localStorageError);
-            showNotice("Could not save changes in this browser. Export a backup and free some storage.");
-            return false;
+          const currentIds = new Set(products.map(product => product.id));
+          const productRows = products.map((product, index) => ({
+            id: product.id,
+            sort_order: index,
+            data: product
+          }));
+          if (productRows.length) {
+            const { error } = await supabase.from("products").upsert(productRows, { onConflict: "id" });
+            if (error) throw error;
           }
+          const removedIds = Array.from(remoteProductIds).filter(id => !currentIds.has(id));
+          if (removedIds.length) {
+            const { error } = await supabase.from("products").delete().in("id", removedIds);
+            if (error) throw error;
+          }
+          const { error: contentError } = await supabase
+            .from("site_content")
+            .upsert({ id: 1, data: currentSiteContent() }, { onConflict: "id" });
+          if (contentError) throw contentError;
+          remoteProductIds = currentIds;
+          return true;
+        } catch (error) {
+          console.error("Unable to save Hdpeduct content to Supabase.", error);
+          showNotice(`Could not save to Supabase. ${error.message || "Check your connection and permissions."}`);
+          return false;
         }
       };
       function getCloudinarySettings() {
-        const settings = readStore("hdpeduct-cloudinary-config", {});
-        if (!settings || typeof settings.cloudName !== "string" || typeof settings.uploadPreset !== "string") {
-          return null;
-        }
-        const cloudName = settings.cloudName.trim();
-        const uploadPreset = settings.uploadPreset.trim();
-        return cloudName && uploadPreset ? { cloudName, uploadPreset } : null;
+        return cloudinarySettings;
       }
       async function uploadImageToCloudinary(file, settings) {
         const body = new FormData();
@@ -4365,7 +4325,7 @@
       }
       const themeToggle = $("#themeToggle");
       const themeMeta = $('meta[name="theme-color"]');
-      function applyTheme(theme, persistPreference) {
+      function applyTheme(theme) {
         const dark = theme === "dark";
         const logoPath = "Images/logo.png";
         document.body.dataset.theme = dark ? "dark" : "light";
@@ -4377,23 +4337,9 @@
           ? '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg>'
           : '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.2 15.3A8.6 8.6 0 0 1 8.7 3.8 8.8 8.8 0 1 0 20.2 15.3Z"></path></svg>';
         themeMeta.content = dark ? "#0d1724" : "#f4f8fb";
-        if (persistPreference) {
-          try {
-            localStorage.setItem("hdpeduct-theme", dark ? "dark" : "light");
-          } catch (error) {
-            console.error("Unable to save the color theme preference.", error);
-            showNotice("Theme changed, but your preference could not be saved in this browser.");
-          }
-        }
       }
-      let savedTheme = "dark";
-      try {
-        savedTheme = localStorage.getItem("hdpeduct-theme") === "light" ? "light" : "dark";
-      } catch (error) {
-        console.error("Unable to read the saved color theme preference.", error);
-      }
-      applyTheme(savedTheme, false);
-      themeToggle.addEventListener("click", () => applyTheme(document.body.dataset.theme === "dark" ? "light" : "dark", true));
+      applyTheme("dark");
+      themeToggle.addEventListener("click", () => applyTheme(document.body.dataset.theme === "dark" ? "light" : "dark"));
       $("#heroSlideDots").addEventListener("click", event => {
         const dot = event.target.closest("[data-hero-slide-index]");
         if (!dot) return;
@@ -4599,17 +4545,39 @@
       $("#loginBackdrop").addEventListener("click", event => {
         if (event.target === $("#loginBackdrop")) closeLogin();
       });
-      $("#loginForm").addEventListener("submit", event => {
+      $("#loginForm").addEventListener("submit", async event => {
         event.preventDefault();
-        const adminEmail = $("#adminEmail").value.trim();
-        const adminPassword = $("#adminPassword").value;
-        const currentPassword = readAdminPassword();
-        if (adminEmail === "admin@hdpeduct" && adminPassword === currentPassword) {
+        const submitButton = $("#loginForm button[type='submit']");
+        const email = $("#adminEmail").value.trim();
+        const password = $("#adminPassword").value;
+        $("#loginError").textContent = "";
+        if (!supabase) {
+          $("#loginError").textContent = "Supabase is not configured. Set the project URL and anon key, then rebuild the site.";
+          return;
+        }
+        let authenticated = false;
+        submitButton.disabled = true;
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          authenticated = true;
+          const { data: membership, error: membershipError } = await supabase
+            .from("admin_users")
+            .select("user_id")
+            .eq("user_id", data.user.id)
+            .maybeSingle();
+          if (membershipError) throw membershipError;
+          if (!membership) throw new Error("This account is not authorized to edit the website.");
+          await loadSupabaseSiteData();
           $("#loginForm").reset();
           closeLogin();
           openAdminView();
-        } else {
-          $("#loginError").textContent = "Invalid Admin ID or Password.";
+        } catch (error) {
+          if (authenticated) await supabase.auth.signOut();
+          console.error("Supabase admin sign-in failed.", error);
+          $("#loginError").textContent = error.message || "Could not sign in. Check your credentials and Supabase setup.";
+        } finally {
+          submitButton.disabled = false;
         }
       });
       document.addEventListener("keydown", event => {
@@ -4629,37 +4597,40 @@
         document.body.style.overflow = "";
       };
       $("#backToStore").addEventListener("click", closeAdmin);
-      $("#logoutButton").addEventListener("click", () => {
+      $("#logoutButton").addEventListener("click", async () => {
+        if (!supabase) return;
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          console.error("Supabase sign-out failed.", error);
+          showNotice(`Could not sign out. ${error.message}`);
+          return;
+        }
         closeAdmin();
         showNotice("You have been signed out.");
       });
-      $("#passwordForm").addEventListener("submit", event => {
+      $("#passwordForm").addEventListener("submit", async event => {
         event.preventDefault();
         const form = event.currentTarget;
-        const currentPassword = $("#currentAdminPassword").value;
         const newPassword = $("#newAdminPassword").value;
-        const savedPassword = readAdminPassword();
-        if (currentPassword !== savedPassword) {
-          showNotice("Current password is incorrect.");
-          return;
-        }
         if (newPassword !== $("#confirmAdminPassword").value) {
           showNotice("New password and confirmation do not match.");
           return;
         }
         try {
-          localStorage.setItem("hdpeduct-admin-password", newPassword);
+          if (!supabase) throw new Error("Supabase is not configured.");
+          const { error } = await supabase.auth.updateUser({ password: newPassword });
+          if (error) throw error;
           form.reset();
-          showNotice("Admin password updated.");
+          showNotice("Supabase account password updated.");
         } catch (error) {
-          console.error("Unable to save the admin password in browser storage.", error);
-          showNotice("Could not save the admin password in this browser.");
+          console.error("Unable to update the Supabase account password.", error);
+          showNotice(`Could not update the account password. ${error.message}`);
         }
       });
       const savedCloudinarySettings = getCloudinarySettings();
       $("#cloudinaryCloudName").value = savedCloudinarySettings ? savedCloudinarySettings.cloudName : "";
       $("#cloudinaryUploadPreset").value = savedCloudinarySettings ? savedCloudinarySettings.uploadPreset : "";
-      $("#cloudinarySettingsForm").addEventListener("submit", event => {
+      $("#cloudinarySettingsForm").addEventListener("submit", async event => {
         event.preventDefault();
         const cloudName = $("#cloudinaryCloudName").value.trim();
         const uploadPreset = $("#cloudinaryUploadPreset").value.trim();
@@ -4669,12 +4640,13 @@
           errorElement.textContent = "Enter a valid Cloudinary cloud name and unsigned preset name.";
           return;
         }
-        try {
-          localStorage.setItem("hdpeduct-cloudinary-config", JSON.stringify({ cloudName, uploadPreset }));
-          showNotice("Cloudinary settings saved in this browser.");
-        } catch (error) {
-          console.error("Unable to save Cloudinary settings in browser storage.", error);
-          errorElement.textContent = "Could not save Cloudinary settings in this browser.";
+        const previousSettings = cloudinarySettings;
+        cloudinarySettings = { cloudName, uploadPreset };
+        if (await persist()) {
+          showNotice("Cloudinary settings saved to Supabase.");
+        } else {
+          cloudinarySettings = previousSettings;
+          errorElement.textContent = "Could not save Cloudinary settings to Supabase.";
         }
       });
       $$(".admin-tab").forEach(tab => tab.addEventListener("click", () => {
@@ -4778,21 +4750,21 @@
           observeReveals();
           if (uploadFailures) {
             const uploadFailureMessage = uploadFailures === 1
-              ? "An image upload failed; the image remains stored in this browser."
-              : `${uploadFailures} image uploads failed; those images remain stored in this browser.`;
-            showNotice(`Product saved locally. ${uploadFailureMessage}`);
+              ? "An image upload failed; its browser copy was embedded in the Supabase product record."
+              : `${uploadFailures} image uploads failed; browser copies were embedded in the Supabase product records.`;
+            showNotice(`Product saved to Supabase. ${uploadFailureMessage}`);
           } else if (filesToUpload.some(Boolean) && !cloudinarySettings) {
             showNotice(wasEditing
-              ? "Product updated locally. Configure Cloudinary in the Account tab to upload images."
-              : "Product added locally. Configure Cloudinary in the Account tab to upload images.");
+              ? "Product updated in Supabase. Configure Cloudinary in the Account tab to host its images."
+              : "Product added to Supabase. Configure Cloudinary in the Account tab to host its images.");
           } else {
             showNotice(wasEditing ? "Product updated and catalogue refreshed." : "Product saved and catalogue refreshed.");
           }
         } catch (error) {
           products = previousProducts;
           renderAdmin();
-          console.error("Unable to save the product to browser storage.", error);
-          showNotice("Could not save this product locally. Your existing catalogue was kept.");
+          console.error("Unable to save the product to Supabase.", error);
+          showNotice("Could not save this product to Supabase. Your existing catalogue was kept.");
         } finally {
           saveButton.disabled = false;
           if (!savedSuccessfully) saveButton.textContent = originalButtonLabel;
@@ -4985,7 +4957,8 @@
           categories,
           partners,
           heroSlides,
-          sales
+          sales,
+          cloudinarySettings
         };
         const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
         const download = document.createElement("a");
@@ -4999,7 +4972,7 @@
         const input = event.currentTarget;
         const file = input.files[0];
         if (!file) return;
-        const previousData = { products, categories, partners, heroSlides, sales };
+        const previousData = { products, categories, partners, heroSlides, sales, cloudinarySettings };
         try {
           const imported = JSON.parse(await file.text());
           if (!imported || typeof imported !== "object" || Array.isArray(imported)) {
@@ -5025,8 +4998,13 @@
             sale && typeof sale === "object" && !Array.isArray(sale) &&
             Number.isFinite(Number(sale.quantity))
           );
+          const validCloudinarySettings = imported.cloudinarySettings === undefined ||
+            imported.cloudinarySettings === null ||
+            (typeof imported.cloudinarySettings.cloudName === "string" &&
+              typeof imported.cloudinarySettings.uploadPreset === "string");
           if (imported.format !== "hdpeduct-static-site" || imported.version !== 1 ||
-              !validProducts || !validCategories || !validPartners || !validSlides || !validSales) {
+              !validProducts || !validCategories || !validPartners || !validSlides || !validSales ||
+              !validCloudinarySettings) {
             throw new Error("This file is not a valid Hdpeduct site data export.");
           }
           products = imported.products;
@@ -5043,14 +5021,15 @@
             destination: heroDestinations.has(slide.destination) ? slide.destination : "#catalog"
           }));
           sales = imported.sales;
+          cloudinarySettings = imported.cloudinarySettings || null;
           activeHeroSlide = 0;
           if (!await persist()) {
-            ({ products, categories, partners, heroSlides, sales } = previousData);
+            ({ products, categories, partners, heroSlides, sales, cloudinarySettings } = previousData);
             renderAll();
             return;
           }
           renderAll();
-          showNotice("Site data imported and saved in this browser.");
+          showNotice("Site data imported and saved to Supabase.");
         } catch (error) {
           console.error("Unable to import Hdpeduct site data.", error);
           showNotice(error instanceof SyntaxError ? "The selected file is not valid JSON." : error.message);
@@ -5058,12 +5037,14 @@
           input.value = "";
         }
       });
-      loadLocalSiteData()
+      renderAll();
+      loadSupabaseSiteData()
+        .then(() => renderAll())
         .catch(error => {
-          console.error("Unable to load local website data.", error);
-          showNotice("Could not load saved changes. Showing the starter website data.");
-        })
-        .finally(renderAll);
+          supabaseReady = false;
+          console.error("Unable to load website data from Supabase.", error);
+          showNotice(`Showing starter products. ${error.message || "Supabase data could not be loaded."}`);
+        });
     })();
   </script>
 </body>
