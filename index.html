@@ -1344,9 +1344,17 @@
             <label for="prodDescInput">Product Description</label>
             <textarea id="prodDescInput" required placeholder="Detailed specifications, dimensions, pressure rating..."></textarea>
           </div>
-          <div class="form-group" style="display:flex; gap:12px; align-items:center;">
-            <input id="prodFeaturedCheck" type="checkbox" style="width:18px; height:18px;">
-            <label for="prodFeaturedCheck" style="margin:0; cursor:pointer;">Display in "Top Interesting" highlights</label>
+          <div class="form-group">
+            <label for="prodImageFileInput">Upload Product Picture (JPG, PNG, WebP)</label>
+            <input id="prodImageFileInput" type="file" accept="image/*" style="padding:8px;">
+            <div style="margin-top:8px; display:flex; align-items:center; gap:12px;">
+              <img id="prodImagePreview" src="Images/logo.png" alt="Preview" style="width:64px; height:64px; object-fit:contain; border:1px solid var(--border); border-radius:6px; background:var(--bg); padding:4px; display:none;">
+              <button type="button" id="removeProdImageBtn" class="btn btn-outline" style="padding:4px 10px; font-size:11px; color:#e05244; display:none;">Remove Picture</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="prodImageUrlInput">Or Paste Direct Image URL (Cloudinary / Web Link)</label>
+            <input id="prodImageUrlInput" type="url" placeholder="https://res.cloudinary.com/...">
           </div>
           <div class="form-group" style="display:flex; gap:12px; align-items:center;">
             <input id="prodSlideCheck" type="checkbox" style="width:18px; height:18px;">
@@ -1414,6 +1422,7 @@
       let selectedCategory = "All";
       let activeHeroIndex = 0;
       let editingProductId = null;
+      let currentUploadedImage = "";
 
       // Restore LocalStorage
       try {
@@ -1539,6 +1548,21 @@
         $("#heroActionBtn").href = slide.destination;
         $("#heroCount").textContent = `${String(activeHeroIndex + 1).padStart(2, "0")} / ${String(heroSlides.length).padStart(2, "0")}`;
 
+        const visualCard = $(".hero-visual-card");
+        if (slide.image) {
+          visualCard.innerHTML = `
+            <img src="${slide.image}" alt="${slide.title}" style="max-height:240px; max-width:85%; object-fit:contain; border-radius:8px;" onerror="this.onerror=null; this.src='Images/logo.png';">
+            <span class="hero-tag">${slide.eyebrow}</span>
+          `;
+        } else {
+          visualCard.innerHTML = `
+            <div class="hero-visual-art">
+              <div class="hero-pipe-ring"></div>
+            </div>
+            <span class="hero-tag">Certified Pipe Solutions · KSA</span>
+          `;
+        }
+
         $("#heroDots").innerHTML = heroSlides.map((_, i) => `
           <div class="hero-dot ${i === activeHeroIndex ? 'active' : ''}" data-slide="${i}"></div>
         `).join("");
@@ -1586,7 +1610,7 @@
           <article class="product-card">
             <div class="product-thumb">
               <span class="product-badge">Featured</span>
-              <img src="Images/logo.png" alt="${p.name}" onerror="this.onerror=null; this.src='assets/hdpeduct_logo_nobg.png';">
+              <img src="${p.image || 'Images/logo.png'}" alt="${p.name}" onerror="this.onerror=null; this.src='assets/hdpeduct_logo_nobg.png';">
             </div>
             <div class="product-info">
               <span class="product-category-label">${p.category}</span>
@@ -1642,7 +1666,7 @@
         $("#catalogueGrid").innerHTML = filtered.map(p => `
           <article class="product-card">
             <div class="product-thumb">
-              <img src="Images/logo.png" alt="${p.name}" onerror="this.onerror=null; this.src='assets/hdpeduct_logo_nobg.png';">
+              <img src="${p.image || 'Images/logo.png'}" alt="${p.name}" onerror="this.onerror=null; this.src='assets/hdpeduct_logo_nobg.png';">
             </div>
             <div class="product-info">
               <span class="product-category-label">${p.category}</span>
@@ -1666,6 +1690,7 @@
         $("#detailCat").textContent = p.category;
         $("#detailName").textContent = p.name;
         $("#detailDesc").textContent = p.description;
+        $("#detailImg").src = p.image || "Images/logo.png";
         $("#detailInquireBtn").onclick = () => {
           closeModal("#detailModal");
           openInquiry(p.name);
@@ -1698,7 +1723,12 @@
           return `
             <tr>
               <td>${String(i + 1).padStart(2, "0")}</td>
-              <td><strong>${p.name}</strong></td>
+              <td>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <img src="${p.image || 'Images/logo.png'}" alt="" style="width:36px; height:36px; object-fit:contain; border-radius:4px; background:var(--bg); border:1px solid var(--border); padding:2px;" onerror="this.onerror=null; this.src='assets/hdpeduct_logo_nobg.png';">
+                  <strong>${p.name}</strong>
+                </div>
+              </td>
               <td><span style="font-size:12px; color:var(--primary);">${p.category}</span></td>
               <td style="text-align:center;">
                 <button class="btn ${p.featured ? 'btn-accent' : 'btn-outline'}" data-toggle-feat="${p.id}" style="padding:4px 10px; font-size:11px;">
@@ -1754,7 +1784,8 @@
               eyebrow: p.category,
               description: p.description.slice(0, 130) + "...",
               buttonLabel: "View Details",
-              destination: "#catalog"
+              destination: "#catalog",
+              image: p.image || ""
             });
             showToast(`Added "${p.name}" to slides.`);
           }
@@ -1778,10 +1809,12 @@
           const p = products.find(i => i.id === b.dataset.editProd);
           if (!p) return;
           editingProductId = p.id;
+          currentUploadedImage = p.image || "";
           $("#prodNameInput").value = p.name;
           $("#prodCatSelect").value = p.category;
           $("#prodDescInput").value = p.description;
-          $("#prodFeaturedCheck").checked = Boolean(p.featured);
+          $("#prodImageUrlInput").value = currentUploadedImage.startsWith("http") ? currentUploadedImage : "";
+          updateImagePreview(currentUploadedImage);
           $("#prodSlideCheck").checked = heroSlides.some(s => s.title === p.name);
           $("#adminFormHeading").textContent = "Edit Product";
           $("#saveProdBtn").textContent = "Save Changes";
@@ -1791,21 +1824,70 @@
 
         $$("[data-del-prod]").forEach(b => b.addEventListener("click", () => {
           const id = b.dataset.delProd;
-          const p = products.find(i => i.id === id);
-          products = products.filter(i => i.id !== id);
-          if (p) heroSlides = heroSlides.filter(s => s.title !== p.name);
+          products = products.filter(p => p.id !== id);
           persistData();
           renderAdmin();
           renderFeatured();
           renderCatalogue();
-          renderHero();
           showToast("Product deleted.");
         }));
       }
 
+      function updateImagePreview(src) {
+        const preview = $("#prodImagePreview");
+        const removeBtn = $("#removeProdImageBtn");
+        if (src) {
+          preview.src = src;
+          preview.style.display = "block";
+          removeBtn.style.display = "inline-flex";
+        } else {
+          preview.src = "Images/logo.png";
+          preview.style.display = "none";
+          removeBtn.style.display = "none";
+        }
+      }
+
+      $("#prodImageFileInput").addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const maxDim = 800;
+            const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            currentUploadedImage = canvas.toDataURL("image/webp", 0.85);
+            $("#prodImageUrlInput").value = "";
+            updateImagePreview(currentUploadedImage);
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      $("#prodImageUrlInput").addEventListener("input", e => {
+        const url = e.target.value.trim();
+        currentUploadedImage = url;
+        updateImagePreview(url);
+      });
+
+      $("#removeProdImageBtn").addEventListener("click", () => {
+        currentUploadedImage = "";
+        $("#prodImageFileInput").value = "";
+        $("#prodImageUrlInput").value = "";
+        updateImagePreview("");
+      });
+
       $("#adminAddProductModalTrigger").addEventListener("click", () => {
         editingProductId = null;
+        currentUploadedImage = "";
         $("#adminProductForm").reset();
+        updateImagePreview("");
         $("#adminFormHeading").textContent = "Add New Product";
         $("#saveProdBtn").textContent = "Save Product";
         $("#cancelProdEditBtn").style.display = "none";
@@ -1817,14 +1899,15 @@
         const name = $("#prodNameInput").value.trim();
         const category = $("#prodCatSelect").value;
         const description = $("#prodDescInput").value.trim();
-        const featured = $("#prodFeaturedCheck").checked;
         const addToSlide = $("#prodSlideCheck").checked;
+        const image = currentUploadedImage || "";
 
         if (editingProductId) {
-          products = products.map(p => p.id === editingProductId ? { ...p, name, category, description, featured } : p);
+          products = products.map(p => p.id === editingProductId ? { ...p, name, category, description, image } : p);
+          heroSlides = heroSlides.map(s => s.title === name ? { ...s, image, description: description.slice(0, 130) + "..." } : s);
           showToast("Product updated.");
         } else {
-          products.unshift({ id: `p-${Date.now()}`, name, category, description, featured });
+          products.unshift({ id: `p-${Date.now()}`, name, category, description, featured: false, image });
           showToast("Product added.");
         }
 
@@ -1834,12 +1917,15 @@
             eyebrow: category,
             description: description.slice(0, 130) + "...",
             buttonLabel: "View Details",
-            destination: "#catalog"
+            destination: "#catalog",
+            image
           });
         }
 
         editingProductId = null;
+        currentUploadedImage = "";
         $("#adminProductForm").reset();
+        updateImagePreview("");
         $("#cancelProdEditBtn").style.display = "none";
         persistData();
         renderAdmin();
@@ -1851,7 +1937,9 @@
 
       $("#cancelProdEditBtn").addEventListener("click", () => {
         editingProductId = null;
+        currentUploadedImage = "";
         $("#adminProductForm").reset();
+        updateImagePreview("");
         $("#cancelProdEditBtn").style.display = "none";
         switchAdminTab("tabProducts");
       });
