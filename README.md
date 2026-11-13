@@ -4,15 +4,15 @@ The website is a Vite-built static frontend. Supabase provides shared product/si
 
 ## Configure Supabase
 
-1. In your Supabase project, open **Project Settings → API** and copy the project URL and **anon/public** key. Never use the `service_role` key in this frontend.
+1. In your Supabase project, open **Project Settings → API** and copy the project URL and **publishable** key. Never use a secret or `service_role` key in this frontend.
 2. Copy `.env.example` to `.env.local` and set:
 
    ```dotenv
    VITE_SUPABASE_URL=https://your-project-id.supabase.co
-   VITE_SUPABASE_ANON_KEY=your-public-anon-key
+   VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
    ```
 
-   These are build-time values. The anon key is delivered to the browser and is not a secret; secure data writes with Supabase Auth and the supplied row-level security policies. Do not commit `.env.local`.
+   These are build-time values. The publishable key is delivered to the browser and is not a secret; secure data writes with Supabase Auth and the supplied row-level security policies. Do not commit `.env.local`.
 3. In the Supabase SQL Editor, run [`supabase/migrations/20261110000000_site_data.sql`](./supabase/migrations/20261110000000_site_data.sql).
 4. In **Authentication → Users**, create the administrator account using the admin's email and password. Copy that user's UUID and register it in the admin allowlist, replacing the placeholder:
 
@@ -33,7 +33,7 @@ The admin signs in with the Supabase Auth email and password. **Website Editor �
 
 ## Build and static hosting
 
-Run `npm run build` to generate `dist/`, then deploy that folder to a static host. Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as build environment variables on the host. The values are embedded into the browser bundle at build time; rebuilding is required after changing them.
+Run `npm run build` to generate `dist/`, then deploy that folder to a static host. Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` as build environment variables on the host. The values are embedded into the browser bundle at build time; rebuilding is required after changing them.
 
 Products and images from the previous browser-only version are not migrated automatically. Before switching, export the site data from the old version and import it after Supabase is configured and an administrator is signed in.
 

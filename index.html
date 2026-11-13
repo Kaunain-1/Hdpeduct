@@ -6,8 +6,6 @@
   <meta name="theme-color" content="#0d1724">
   <meta name="description" content="Hdpeduct - Engineered HDPE pipes, telecom microducts, and infrastructure piping solutions across Saudi Arabia and the GCC.">
   <link rel="icon" type="image/png" href="Images/logo.png">
-  <!-- Load Supabase safely via CDN without bare module import crashes -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <title>Hdpeduct | HDPE Pipes &amp; Telecom Infrastructure Solutions</title>
 
   <style>
@@ -1372,7 +1370,9 @@
   <!-- Toast Notification -->
   <div class="toast-notice" id="toastNotice"></div>
 
-  <script>
+  <script type="module">
+    import { supabase } from "./utils/supabase.ts";
+
     (() => {
       // Starter Data
       const defaultCategories = [
@@ -1958,6 +1958,39 @@
         } catch (_) {}
       }
 
+      async function loadProducts() {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*");
+
+        if (error) {
+          console.error("Unable to load products from Supabase:", error);
+          showToast("Unable to load products from Supabase.");
+          return;
+        }
+
+        if (data.length === 0) {
+          console.warn("The Supabase products table is empty; keeping the local products.");
+          showToast("No Supabase products found. Showing local products.");
+          return;
+        }
+
+        products = data
+          .slice()
+          .sort((left, right) => (left.sort_order || 0) - (right.sort_order || 0))
+          .map(row => ({
+            ...(row.data && typeof row.data === "object" ? row.data : row),
+            id: row.id
+          }));
+        categories = [...new Set([
+          ...defaultCategories,
+          ...products.map(product => product.category).filter(category => typeof category === "string" && category)
+        ])];
+        renderCategories();
+        renderFeatured();
+        renderCatalogue();
+      }
+
       // Partners Rendering
       $("#partnersGrid").innerHTML = partners.map(p => `
         <div class="partner-card">
@@ -1971,6 +2004,7 @@
       renderCategories();
       renderFeatured();
       renderCatalogue();
+      loadProducts();
     })();
   </script>
 </body>
