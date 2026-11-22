@@ -24,8 +24,8 @@ export default defineConfig(async ({ mode }) => {
 
   return {
     define: {
-      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(getPublicConfig("VITE_SUPABASE_URL")),
-      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(getPublicConfig("VITE_SUPABASE_PUBLISHABLE_KEY"))
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(getPublicConfig("https://rndqgrlxrqbkgxeupbev.supabase.co")),
+      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(getPublicConfig("sb_publishable_HybFTf2rPqZ2_9X8XsoRlA_siI6nrqi"))
     },
     publicDir: false,
     plugins: [{

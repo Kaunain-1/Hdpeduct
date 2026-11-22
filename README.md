@@ -36,6 +36,8 @@ The admin signs in with the Supabase Auth email and password. **Website Editor â
 
 Run `npm run build` to generate `dist/`, then deploy that folder to a static host. Vite uses `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` from the build environment when provided, and otherwise falls back to the public values in `.env.example`. The values are embedded into the browser bundle at build time; rebuilding is required after changing them.
 
+For a Render Web Service, set the build command to `npm run build` and the start command to `npm start`. The start script serves the built site on Render's `PORT`; do not use bare `npm run` as the start command because it only lists scripts and exits.
+
 Products and images from the previous browser-only version are not migrated automatically. Before switching, export the site data from the old version and import it after Supabase is configured and an administrator is signed in.
 
 ## Security notes
