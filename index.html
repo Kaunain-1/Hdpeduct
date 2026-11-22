@@ -2051,8 +2051,6 @@
     }
 
     async function loadSupabaseProducts(supabase) {
-      if (!import.meta.env?.VITE_SUPABASE_URL || !import.meta.env?.VITE_SUPABASE_PUBLISHABLE_KEY) return;
-
       const { data, error } = await supabase.from("products").select("*");
 
       if (error) {
@@ -2067,70 +2065,77 @@
     }
 
     async function initializeSupabase() {
-      if (!import.meta.env?.VITE_SUPABASE_URL || !import.meta.env?.VITE_SUPABASE_PUBLISHABLE_KEY) return;
-
+      if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+        throw new Error("Supabase configuration is missing from this build. Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY, then rebuild.");
+      }
       const { supabase } = await import("./utils/supabase.ts");
-      window.hdpeductAdminSignIn = async (email, password) => {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      };
-      window.hdpeductAdminSignOut = async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-      };
+      return supabase;
+    }
 
-      let productSaveQueue = Promise.resolve();
-      const productsLoadPromise = loadSupabaseProducts(supabase).catch(error => {
+    const supabaseClientPromise = initializeSupabase();
+    window.hdpeductAdminSignIn = async (email, password) => {
+      const supabase = await supabaseClientPromise;
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+    };
+    window.hdpeductAdminSignOut = async () => {
+      const supabase = await supabaseClientPromise;
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    };
+
+    let productSaveQueue = Promise.resolve();
+    const productsLoadPromise = supabaseClientPromise
+      .then(supabase => loadSupabaseProducts(supabase))
+      .catch(error => {
         window.hdpeductProductLoadFailed(error);
         return false;
       });
-      window.hdpeductPersistProducts = getProducts => {
-        const save = productSaveQueue.catch(() => {}).then(async () => {
-          const schema = await productsLoadPromise;
-          if (!schema) throw new Error("Products could not be loaded from Supabase; refusing to overwrite the shared catalogue.");
+    window.hdpeductPersistProducts = getProducts => {
+      const save = productSaveQueue.catch(() => {}).then(async () => {
+        const supabase = await supabaseClientPromise;
+        const schema = await productsLoadPromise;
+        if (!schema) throw new Error("Products could not be loaded from Supabase; refusing to overwrite the shared catalogue.");
 
-          const products = getProducts();
-          const rows = products.map((product, sort_order) => {
-            const { id, ...data } = product;
-            const values = {
-              id,
-              sort_order,
-              data,
-              name: product.name,
-              category: product.category,
-              description: product.description,
-              featured: product.featured,
-              images: Array.isArray(schema.sample?.images)
-                ? (product.image ? [product.image] : [])
-                : typeof schema.sample?.images === "string" ? product.image || "" : undefined
-            };
-            return Object.fromEntries(
-              Object.entries(values).filter(([column, value]) => schema.columns.includes(column) && value !== undefined)
-            );
-          });
-          const { data: existingProducts, error: selectError } = await supabase.from("products").select("id");
-          if (selectError) throw selectError;
-
-          if (rows.length) {
-            const { error } = await supabase.from("products").upsert(rows, { onConflict: "id" });
-            if (error) throw error;
-          }
-
-          const productIds = new Set(rows.map(row => row.id));
-          const removedIds = existingProducts
-            .map(product => product.id)
-            .filter(id => !productIds.has(id));
-          if (removedIds.length) {
-            const { error } = await supabase.from("products").delete().in("id", removedIds);
-            if (error) throw error;
-          }
+        const products = getProducts();
+        const rows = products.map((product, sort_order) => {
+          const { id, ...data } = product;
+          const values = {
+            id,
+            sort_order,
+            data,
+            name: product.name,
+            category: product.category,
+            description: product.description,
+            featured: product.featured,
+            images: Array.isArray(schema.sample?.images)
+              ? (product.image ? [product.image] : [])
+              : typeof schema.sample?.images === "string" ? product.image || "" : undefined
+          };
+          return Object.fromEntries(
+            Object.entries(values).filter(([column, value]) => schema.columns.includes(column) && value !== undefined)
+          );
         });
-        productSaveQueue = save;
-        return save;
-      };
-    }
+        const { data: existingProducts, error: selectError } = await supabase.from("products").select("id");
+        if (selectError) throw selectError;
 
-    initializeSupabase();
+        if (rows.length) {
+          const { error } = await supabase.from("products").upsert(rows, { onConflict: "id" });
+          if (error) throw error;
+        }
+
+        const productIds = new Set(rows.map(row => row.id));
+        const removedIds = existingProducts
+          .map(product => product.id)
+          .filter(id => !productIds.has(id));
+        if (removedIds.length) {
+          const { error } = await supabase.from("products").delete().in("id", removedIds);
+          if (error) throw error;
+        }
+      });
+      productSaveQueue = save;
+      return save;
+    };
   </script>
 </body>
 </html>
