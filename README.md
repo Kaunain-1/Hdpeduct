@@ -14,15 +14,16 @@ The website is a Vite-built static frontend. Supabase provides shared product/si
 
    These are build-time values. The publishable key is delivered to the browser and is not a secret; secure data writes with Supabase Auth and the supplied row-level security policies. Do not commit `.env.local`.
 3. In the Supabase SQL Editor, run [`supabase/migrations/20261110000000_site_data.sql`](./supabase/migrations/20261110000000_site_data.sql).
-4. In **Authentication → Users**, create the administrator account using the admin's email and password. Copy that user's UUID and register it in the admin allowlist, replacing the placeholder:
+4. To populate an empty products table with the site's starter catalogue, run [`supabase/seed.sql`](./supabase/seed.sql) in the SQL Editor. It supports both the legacy flat product columns and the JSON-backed schema, and leaves existing product IDs unchanged.
+5. In **Authentication → Users**, create the administrator account using the admin's email and password. Copy that user's UUID and register it in the admin allowlist, replacing the placeholder:
 
    ```sql
    insert into public.admin_users (user_id)
    values ('AUTH_USER_UUID');
    ```
 
-   Only users in `admin_users` can change products or site content. Visitors can read the public catalogue and site content.
-5. Install dependencies and run the local development build:
+   Only users in `admin_users` can change products or site content. Visitors can read the public catalogue and site content. Product changes are saved in Supabase; other devices will show them after the catalogue is refreshed.
+6. Install dependencies and run the local development build:
 
    ```powershell
    npm install

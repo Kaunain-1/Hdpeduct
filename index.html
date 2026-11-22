@@ -547,6 +547,7 @@
       margin-bottom: 16px;
       flex: 1;
       display: -webkit-box;
+      line-clamp: 2;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -1219,8 +1220,8 @@
       <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Sign in to edit the catalogue, update Top Interesting items, or change hero slides.</p>
       <form id="adminLoginForm">
         <div class="form-group">
-          <label for="adminEmailInput">Admin Email / ID</label>
-          <input id="adminEmailInput" type="text" required placeholder="admin@hdpeduct">
+          <label for="adminEmailInput">Admin Email</label>
+          <input id="adminEmailInput" type="email" required placeholder="admin@hdpeduct.net">
         </div>
         <div class="form-group">
           <label for="adminPasswordInput">Password</label>
@@ -1506,20 +1507,22 @@
       $$("#navMenu a").forEach(a => a.addEventListener("click", () => $("#navMenu").classList.remove("open")));
 
       // Admin Login
-      $("#adminLoginForm").addEventListener("submit", e => {
+      $("#adminLoginForm").addEventListener("submit", async e => {
         e.preventDefault();
-        const id = $("#adminEmailInput").value.trim().toLowerCase();
+        const email = $("#adminEmailInput").value.trim();
         const pass = $("#adminPasswordInput").value;
-        const validPass = localStorage.getItem("hdpeduct-admin-password") || "admin";
 
-        if ((id === "admin" || id.includes("admin")) && pass === validPass) {
+        try {
+          if (!window.hdpeductAdminSignIn) throw new Error("Supabase is not configured.");
+          await window.hdpeductAdminSignIn(email, pass);
           closeModal("#loginModal");
           $("#adminDashboardView").classList.add("open");
           document.body.style.overflow = "hidden";
           renderAdmin();
           showToast("Welcome to Admin Dashboard.");
-        } else {
-          $("#loginErrorMsg").textContent = "Invalid Admin ID or Password. Default is admin@hdpeduct / admin";
+        } catch (error) {
+          console.error("Unable to sign in to Supabase:", error);
+          $("#loginErrorMsg").textContent = error.message || "Unable to sign in.";
         }
       });
 
@@ -1527,10 +1530,17 @@
         $("#adminDashboardView").classList.remove("open");
         document.body.style.overflow = "";
       });
-      $("#adminLogoutBtn").addEventListener("click", () => {
-        $("#adminDashboardView").classList.remove("open");
-        document.body.style.overflow = "";
-        showToast("Logged out successfully.");
+      $("#adminLogoutBtn").addEventListener("click", async () => {
+        try {
+          if (!window.hdpeductAdminSignOut) throw new Error("Supabase is not configured.");
+          await window.hdpeductAdminSignOut();
+          $("#adminDashboardView").classList.remove("open");
+          document.body.style.overflow = "";
+          showToast("Logged out successfully.");
+        } catch (error) {
+          console.error("Unable to sign out of Supabase:", error);
+          showToast("Unable to log out. Please try again.");
+        }
       });
 
       // Hero Carousel Rendering
@@ -1761,10 +1771,9 @@
         $$("[data-toggle-feat]").forEach(b => b.addEventListener("click", () => {
           const id = b.dataset.toggleFeat;
           products = products.map(p => p.id === id ? { ...p, featured: !p.featured } : p);
-          persistData();
+          persistData(true);
           renderAdmin();
           renderFeatured();
-          showToast("Top Interesting updated.");
         }));
 
         $$("[data-toggle-slide]").forEach(b => b.addEventListener("click", () => {
@@ -1823,11 +1832,10 @@
         $$("[data-del-prod]").forEach(b => b.addEventListener("click", () => {
           const id = b.dataset.delProd;
           products = products.filter(p => p.id !== id);
-          persistData();
+          persistData(true);
           renderAdmin();
           renderFeatured();
           renderCatalogue();
-          showToast("Product deleted.");
         }));
       }
 
@@ -1903,10 +1911,8 @@
         if (editingProductId) {
           products = products.map(p => p.id === editingProductId ? { ...p, name, category, description, image } : p);
           heroSlides = heroSlides.map(s => s.title === name ? { ...s, image, description: description.slice(0, 130) + "..." } : s);
-          showToast("Product updated.");
         } else {
           products.unshift({ id: `p-${Date.now()}`, name, category, description, featured: false, image });
-          showToast("Product added.");
         }
 
         if (addToSlide && !heroSlides.some(s => s.title === name)) {
@@ -1925,7 +1931,7 @@
         $("#adminProductForm").reset();
         updateImagePreview("");
         $("#cancelProdEditBtn").style.display = "none";
-        persistData();
+        persistData(true);
         renderAdmin();
         renderFeatured();
         renderCatalogue();
@@ -1949,11 +1955,27 @@
 
       $$(".admin-tab").forEach(t => t.addEventListener("click", () => switchAdminTab(t.dataset.tab)));
 
-      function persistData() {
+      function persistData(syncProducts = false) {
         try {
           localStorage.setItem("hdpeduct-products", JSON.stringify(products));
           localStorage.setItem("hdpeduct-hero-slides", JSON.stringify(heroSlides));
         } catch (_) {}
+
+        if (syncProducts) {
+          if (!window.hdpeductPersistProducts) {
+            const error = new Error("Supabase is not configured.");
+            console.error("Unable to sync products to Supabase:", error);
+            showToast("Supabase unavailable; changes are only on this device.");
+            return;
+          }
+
+          window.hdpeductPersistProducts(() => products)
+            .then(() => showToast("Catalogue synced to Supabase."))
+            .catch(error => {
+              console.error("Unable to sync products to Supabase:", error);
+              showToast("Supabase sync failed; changes are only on this device.");
+            });
+        }
       }
 
       window.hdpeductProductsLoaded = data => {
@@ -1966,10 +1988,20 @@
         products = data
           .slice()
           .sort((left, right) => (left.sort_order || 0) - (right.sort_order || 0))
-          .map(row => ({
-            ...(row.data && typeof row.data === "object" ? row.data : row),
-            id: row.id
-          }));
+          .map(row => {
+            const product = row.data && typeof row.data === "object" ? row.data : row;
+            const starter = starterProducts.find(item => item.id === row.id);
+            const image = Array.isArray(row.images)
+              ? row.images.find(item => typeof item === "string")
+              : typeof row.images === "string" ? row.images : "";
+
+            return {
+              ...product,
+              image: product.image || image || "",
+              featured: typeof product.featured === "boolean" ? product.featured : Boolean(starter && starter.featured),
+              id: row.id
+            };
+          });
         categories = [...new Set([
           ...defaultCategories,
           ...products.map(product => product.category).filter(category => typeof category === "string" && category)
@@ -1999,20 +2031,106 @@
     })();
   </script>
   <script type="module">
-    async function loadSupabaseProducts() {
+    async function getProductColumns(supabase, data) {
+      if (data.length) return Object.keys(data[0]);
+
+      const { error: jsonSchemaError } = await supabase.from("products").select("data,sort_order").limit(0);
+      if (!jsonSchemaError) return ["id", "data", "sort_order"];
+
+      const { error: flatSchemaError } = await supabase.from("products").select("id,name,category,description").limit(0);
+      if (flatSchemaError) {
+        throw new Error(`Unable to read the products table schema: ${flatSchemaError.message}`);
+      }
+
+      const columns = ["id", "name", "category", "description"];
+      for (const column of ["sort_order", "featured", "images"]) {
+        const { error } = await supabase.from("products").select(column).limit(0);
+        if (!error) columns.push(column);
+      }
+      return columns;
+    }
+
+    async function loadSupabaseProducts(supabase) {
       if (!import.meta.env?.VITE_SUPABASE_URL || !import.meta.env?.VITE_SUPABASE_PUBLISHABLE_KEY) return;
 
-      const { supabase } = await import("./utils/supabase.ts");
       const { data, error } = await supabase.from("products").select("*");
 
       if (error) {
         window.hdpeductProductLoadFailed(error);
+        return false;
       } else {
-        window.hdpeductProductsLoaded(data);
+        const productData = data || [];
+        const columns = await getProductColumns(supabase, productData);
+        window.hdpeductProductsLoaded(productData);
+        return { columns, sample: productData[0] };
       }
     }
 
-    loadSupabaseProducts();
+    async function initializeSupabase() {
+      if (!import.meta.env?.VITE_SUPABASE_URL || !import.meta.env?.VITE_SUPABASE_PUBLISHABLE_KEY) return;
+
+      const { supabase } = await import("./utils/supabase.ts");
+      window.hdpeductAdminSignIn = async (email, password) => {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      };
+      window.hdpeductAdminSignOut = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+      };
+
+      let productSaveQueue = Promise.resolve();
+      const productsLoadPromise = loadSupabaseProducts(supabase).catch(error => {
+        window.hdpeductProductLoadFailed(error);
+        return false;
+      });
+      window.hdpeductPersistProducts = getProducts => {
+        const save = productSaveQueue.catch(() => {}).then(async () => {
+          const schema = await productsLoadPromise;
+          if (!schema) throw new Error("Products could not be loaded from Supabase; refusing to overwrite the shared catalogue.");
+
+          const products = getProducts();
+          const rows = products.map((product, sort_order) => {
+            const { id, ...data } = product;
+            const values = {
+              id,
+              sort_order,
+              data,
+              name: product.name,
+              category: product.category,
+              description: product.description,
+              featured: product.featured,
+              images: Array.isArray(schema.sample?.images)
+                ? (product.image ? [product.image] : [])
+                : typeof schema.sample?.images === "string" ? product.image || "" : undefined
+            };
+            return Object.fromEntries(
+              Object.entries(values).filter(([column, value]) => schema.columns.includes(column) && value !== undefined)
+            );
+          });
+          const { data: existingProducts, error: selectError } = await supabase.from("products").select("id");
+          if (selectError) throw selectError;
+
+          if (rows.length) {
+            const { error } = await supabase.from("products").upsert(rows, { onConflict: "id" });
+            if (error) throw error;
+          }
+
+          const productIds = new Set(rows.map(row => row.id));
+          const removedIds = existingProducts
+            .map(product => product.id)
+            .filter(id => !productIds.has(id));
+          if (removedIds.length) {
+            const { error } = await supabase.from("products").delete().in("id", removedIds);
+            if (error) throw error;
+          }
+        });
+        productSaveQueue = save;
+        return save;
+      };
+    }
+
+    initializeSupabase();
   </script>
 </body>
 </html>
