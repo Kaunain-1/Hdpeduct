@@ -22,6 +22,7 @@ export default defineConfig(async ({ mode }) => {
   const exampleEnv = parseEnvDefaults(await readFile(resolve(process.cwd(), ".env.example"), "utf8"));
   const getPublicConfig = (name, fallback) =>
     process.env[name] || fileEnv[name] || exampleEnv[name] || fallback || "";
+  const renderHostname = process.env.RENDER_EXTERNAL_HOSTNAME || "hdpeduct-w8oa.onrender.com";
 
   return {
     define: {
@@ -33,6 +34,9 @@ export default defineConfig(async ({ mode }) => {
         "VITE_SUPABASE_PUBLISHABLE_KEY",
         "sb_publishable_HybFTf2rPqZ2_9X8XsoRlA_siI6nrqi"
       ))
+    },
+    preview: {
+      allowedHosts: [renderHostname]
     },
     publicDir: false,
     plugins: [{
