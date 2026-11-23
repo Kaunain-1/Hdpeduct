@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: hdpeduct-website
+    runtime: node
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
