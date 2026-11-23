@@ -15,6 +15,20 @@ create table if not exists public.admin_users (
   user_id uuid primary key references auth.users (id) on delete cascade
 );
 
+-- Add optional columns used by the website editor while preserving legacy
+-- flat products tables that may already contain catalogue data.
+alter table public.products add column if not exists sort_order integer;
+alter table public.products alter column sort_order set default 0;
+update public.products set sort_order = 0 where sort_order is null;
+alter table public.products alter column sort_order set not null;
+
+alter table public.products add column if not exists featured boolean;
+alter table public.products alter column featured set default false;
+update public.products set featured = false where featured is null;
+alter table public.products alter column featured set not null;
+
+alter table public.products add column if not exists images text;
+
 create table if not exists public.categories (
   id text primary key,
   name text not null,

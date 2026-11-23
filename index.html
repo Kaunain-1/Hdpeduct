@@ -2191,6 +2191,17 @@
             content.categories.map((name, index) => ({ id: name, name, sort_order: index })),
             { onConflict: "id" }
           ).then(({ error }) => { if (error) throw error; });
+          const keptCategoryIds = new Set(content.categories);
+          const { data: existingCategories, error: categorySelectError } =
+            await supabase.from("categories").select("id");
+          if (categorySelectError) throw categorySelectError;
+          const removedCategoryIds = (existingCategories || [])
+            .map(category => category.id)
+            .filter(id => !keptCategoryIds.has(id));
+          if (removedCategoryIds.length) {
+            const { error } = await supabase.from("categories").delete().in("id", removedCategoryIds);
+            if (error) throw error;
+          }
         }
 
         if (content.partners?.length) {
@@ -2203,6 +2214,17 @@
             })),
             { onConflict: "id" }
           ).then(({ error }) => { if (error) throw error; });
+          const keptPartnerIds = new Set(content.partners.map((_, index) => `partner-${index + 1}`));
+          const { data: existingPartners, error: partnerSelectError } =
+            await supabase.from("partners").select("id");
+          if (partnerSelectError) throw partnerSelectError;
+          const removedPartnerIds = (existingPartners || [])
+            .map(partner => partner.id)
+            .filter(id => !keptPartnerIds.has(id));
+          if (removedPartnerIds.length) {
+            const { error } = await supabase.from("partners").delete().in("id", removedPartnerIds);
+            if (error) throw error;
+          }
         }
 
         if (content.heroSlides?.length) {
@@ -2219,6 +2241,17 @@
             })),
             { onConflict: "id" }
           ).then(({ error }) => { if (error) throw error; });
+          const keptSlideIds = new Set(content.heroSlides.map((_, index) => `slide-${index + 1}`));
+          const { data: existingSlides, error: slideSelectError } =
+            await supabase.from("hero_slides").select("id");
+          if (slideSelectError) throw slideSelectError;
+          const removedSlideIds = (existingSlides || [])
+            .map(slide => slide.id)
+            .filter(id => !keptSlideIds.has(id));
+          if (removedSlideIds.length) {
+            const { error } = await supabase.from("hero_slides").delete().in("id", removedSlideIds);
+            if (error) throw error;
+          }
         }
 
         if (content.salesSettings) {

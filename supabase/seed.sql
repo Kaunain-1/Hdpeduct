@@ -60,14 +60,39 @@ begin
       and table_name = 'products'
       and column_name = 'description'
   ) then
-    insert into public.products (id, name, category, description)
-    select
-      item->>'id',
-      item->>'name',
-      item->>'category',
-      item->>'description'
-    from jsonb_array_elements(starter_products) as seed(item)
-    on conflict (id) do nothing;
+    if exists (
+      select 1
+      from information_schema.columns
+      where table_schema = 'public'
+        and table_name = 'products'
+        and column_name = 'sort_order'
+    ) and exists (
+      select 1
+      from information_schema.columns
+      where table_schema = 'public'
+        and table_name = 'products'
+        and column_name = 'featured'
+    ) then
+      insert into public.products (id, name, category, description, sort_order, featured)
+      select
+        item->>'id',
+        item->>'name',
+        item->>'category',
+        item->>'description',
+        (ordinality - 1)::integer,
+        ordinality <= 7
+      from jsonb_array_elements(starter_products) with ordinality as seed(item, ordinality)
+      on conflict (id) do nothing;
+    else
+      insert into public.products (id, name, category, description)
+      select
+        item->>'id',
+        item->>'name',
+        item->>'category',
+        item->>'description'
+      from jsonb_array_elements(starter_products) as seed(item)
+      on conflict (id) do nothing;
+    end if;
   else
     raise exception 'Unsupported public.products schema; no starter products were inserted.';
   end if;
