@@ -1851,11 +1851,27 @@
 
         $$("[data-del-prod]").forEach(b => b.addEventListener("click", () => {
           const id = b.dataset.delProd;
-          products = products.filter(p => p.id !== id);
-          persistData(true);
-          renderAdmin();
-          renderFeatured();
-          renderCatalogue();
+          b.disabled = true;
+          if (!window.hdpeductDeleteProduct) {
+            b.disabled = false;
+            showToast("Supabase is not configured; product was not deleted.");
+            return;
+          }
+
+          window.hdpeductDeleteProduct(id)
+            .then(() => {
+              products = products.filter(p => p.id !== id);
+              persistData();
+              renderAdmin();
+              renderFeatured();
+              renderCatalogue();
+              showToast("Product deleted.");
+            })
+            .catch(error => {
+              console.error("Unable to delete product from Supabase:", error);
+              b.disabled = false;
+              showToast("Product delete failed; the catalogue was not changed.");
+            });
         }));
       }
 
@@ -2160,25 +2176,22 @@
             Object.entries(values).filter(([column, value]) => schema.columns.includes(column) && value !== undefined)
           );
         });
-        const { data: existingProducts, error: selectError } = await supabase.from("products").select("id");
-        if (selectError) throw selectError;
-
         if (rows.length) {
           const { error } = await supabase.from("products").upsert(rows, { onConflict: "id" });
-          if (error) throw error;
-        }
-
-        const productIds = new Set(rows.map(row => row.id));
-        const removedIds = existingProducts
-          .map(product => product.id)
-          .filter(id => !productIds.has(id));
-        if (removedIds.length) {
-          const { error } = await supabase.from("products").delete().in("id", removedIds);
           if (error) throw error;
         }
       });
       productSaveQueue = save;
       return save;
+    };
+    window.hdpeductDeleteProduct = id => {
+      const remove = productSaveQueue.catch(() => {}).then(async () => {
+        const supabase = await supabaseClientPromise;
+        const { error } = await supabase.from("products").delete().eq("id", id);
+        if (error) throw error;
+      });
+      productSaveQueue = remove;
+      return remove;
     };
 
     window.hdpeductPersistSiteContent = getContent => {
