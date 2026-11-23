@@ -20,12 +20,19 @@ function parseEnvDefaults(source) {
 export default defineConfig(async ({ mode }) => {
   const fileEnv = loadEnv(mode, process.cwd(), "VITE_");
   const exampleEnv = parseEnvDefaults(await readFile(resolve(process.cwd(), ".env.example"), "utf8"));
-  const getPublicConfig = name => process.env[name] || fileEnv[name] || exampleEnv[name] || "";
+  const getPublicConfig = (name, fallback) =>
+    process.env[name] || fileEnv[name] || exampleEnv[name] || fallback || "";
 
   return {
     define: {
-      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(getPublicConfig("https://rndqgrlxrqbkgxeupbev.supabase.co")),
-      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(getPublicConfig("sb_publishable_HybFTf2rPqZ2_9X8XsoRlA_siI6nrqi"))
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(getPublicConfig(
+        "VITE_SUPABASE_URL",
+        "https://rndqgrlxrqbkgxeupbev.supabase.co"
+      )),
+      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(getPublicConfig(
+        "VITE_SUPABASE_PUBLISHABLE_KEY",
+        "sb_publishable_HybFTf2rPqZ2_9X8XsoRlA_siI6nrqi"
+      ))
     },
     publicDir: false,
     plugins: [{

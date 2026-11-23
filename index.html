@@ -1423,6 +1423,26 @@
       let editingProductId = null;
       let currentUploadedImage = "";
 
+      window.hdpeductSetSharedCategories = names => {
+        categories = [...new Set([...defaultCategories, ...names])];
+        renderCategories();
+        renderCatalogue();
+      };
+      window.hdpeductSetSharedPartners = sharedPartners => {
+        partners = sharedPartners;
+        $("#partnersGrid").innerHTML = partners.map(p => `
+          <div class="partner-card">
+            <strong>${p.name}</strong>
+            <small>${p.description}</small>
+          </div>
+        `).join("");
+      };
+      window.hdpeductSetSharedHeroSlides = sharedSlides => {
+        heroSlides = sharedSlides;
+        activeHeroIndex = 0;
+        renderHero();
+      };
+
       // Restore LocalStorage
       try {
         const savedProds = localStorage.getItem("hdpeduct-products");
@@ -1961,6 +1981,18 @@
           localStorage.setItem("hdpeduct-hero-slides", JSON.stringify(heroSlides));
         } catch (_) {}
 
+        if (window.hdpeductPersistSiteContent) {
+          window.hdpeductPersistSiteContent(() => ({
+            categories,
+            partners,
+            heroSlides,
+            salesSettings: window.hdpeductSalesSettings || null,
+            cloudinarySettings: window.hdpeductCloudinarySettings || null
+          })).catch(error => {
+            console.error("Unable to sync site content to Supabase:", error);
+          });
+        }
+
         if (syncProducts) {
           if (!window.hdpeductPersistProducts) {
             const error = new Error("Supabase is not configured.");
@@ -2077,6 +2109,18 @@
       const supabase = await supabaseClientPromise;
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      const { data: authData, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
+      const { data: adminUser, error: adminError } = await supabase
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", authData.user?.id)
+        .maybeSingle();
+      if (adminError) throw adminError;
+      if (!adminUser) {
+        await supabase.auth.signOut();
+        throw new Error("This account is not authorized as an administrator.");
+      }
     };
     window.hdpeductAdminSignOut = async () => {
       const supabase = await supabaseClientPromise;
@@ -2136,6 +2180,94 @@
       productSaveQueue = save;
       return save;
     };
+
+    window.hdpeductPersistSiteContent = getContent => {
+      return (async () => {
+        const supabase = await supabaseClientPromise;
+        const content = getContent();
+
+        if (content.categories?.length) {
+          await supabase.from("categories").upsert(
+            content.categories.map((name, index) => ({ id: name, name, sort_order: index })),
+            { onConflict: "id" }
+          ).then(({ error }) => { if (error) throw error; });
+        }
+
+        if (content.partners?.length) {
+          await supabase.from("partners").upsert(
+            content.partners.map((partner, index) => ({
+              id: `partner-${index + 1}`,
+              name: partner.name,
+              description: partner.description,
+              sort_order: index
+            })),
+            { onConflict: "id" }
+          ).then(({ error }) => { if (error) throw error; });
+        }
+
+        if (content.heroSlides?.length) {
+          await supabase.from("hero_slides").upsert(
+            content.heroSlides.map((slide, index) => ({
+              id: `slide-${index + 1}`,
+              title: slide.title,
+              eyebrow: slide.eyebrow || "",
+              description: slide.description || "",
+              button_label: slide.buttonLabel || "View Details",
+              destination: slide.destination || "#catalog",
+              image: slide.image || "",
+              sort_order: index
+            })),
+            { onConflict: "id" }
+          ).then(({ error }) => { if (error) throw error; });
+        }
+
+        if (content.salesSettings) {
+          await supabase.from("sales_settings").upsert(
+            { id: 1, ...content.salesSettings },
+            { onConflict: "id" }
+          ).then(({ error }) => { if (error) throw error; });
+        }
+
+        if (content.cloudinarySettings) {
+          await supabase.from("cloudinary_settings").upsert(
+            { id: 1, ...content.cloudinarySettings },
+            { onConflict: "id" }
+          ).then(({ error }) => { if (error) throw error; });
+        }
+      })();
+    };
+
+    supabaseClientPromise.then(async supabase => {
+      const [categoriesResult, partnersResult, slidesResult, salesResult, cloudinaryResult] = await Promise.all([
+        supabase.from("categories").select("*").order("sort_order"),
+        supabase.from("partners").select("*").order("sort_order"),
+        supabase.from("hero_slides").select("*").order("sort_order"),
+        supabase.from("sales_settings").select("*").eq("id", 1).maybeSingle(),
+        supabase.from("cloudinary_settings").select("*").eq("id", 1).maybeSingle()
+      ]);
+
+      if (categoriesResult.data?.length) {
+        window.hdpeductSetSharedCategories?.(categoriesResult.data.map(item => item.name));
+      }
+      if (partnersResult.data?.length) {
+        window.hdpeductSetSharedPartners?.(partnersResult.data.map(item => ({
+          name: item.name,
+          description: item.description
+        })));
+      }
+      if (slidesResult.data?.length) {
+        window.hdpeductSetSharedHeroSlides?.(slidesResult.data.map(item => ({
+          title: item.title,
+          eyebrow: item.eyebrow,
+          description: item.description,
+          buttonLabel: item.button_label,
+          destination: item.destination,
+          image: item.image
+        })));
+      }
+      if (salesResult.data) window.hdpeductSalesSettings = salesResult.data;
+      if (cloudinaryResult.data) window.hdpeductCloudinarySettings = cloudinaryResult.data;
+    }).catch(error => console.warn("Unable to load shared site settings:", error));
   </script>
 </body>
 </html>
